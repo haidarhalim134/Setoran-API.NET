@@ -1,3 +1,7 @@
+using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using Newtonsoft.Json.Converters;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +11,15 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddControllers().AddNewtonsoftJson();
+builder.Services.AddControllersWithViews()
+        .AddNewtonsoftJson(options =>
+        {
+            // Configure Newtonsoft.Json options here
+            options.SerializerSettings.Converters.Add(new StringEnumConverter()); 
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+        });
+        
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
