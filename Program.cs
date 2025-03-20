@@ -1,4 +1,6 @@
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Newtonsoft.Json.Converters;
 
@@ -19,7 +21,36 @@ builder.Services.AddControllersWithViews()
             options.SerializerSettings.Converters.Add(new StringEnumConverter()); 
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
         });
-        
+
+builder.Services.AddAuthentication()
+    // .AddCookie(IdentityConstants.ApplicationScheme)
+    .AddBearerToken(IdentityConstants.BearerScheme, option => {
+        option.BearerTokenExpiration = TimeSpan.FromDays(600);
+    });
+
+builder.Services.AddIdentityCore<User>()
+    .AddEntityFrameworkStores<Database>()
+    .AddApiEndpoints();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // options.Cookie.Name = "auth_cookie";
+    options.Cookie.SameSite = SameSiteMode.None;
+    // options.LoginPath = new PathString("/api/contests");
+    // options.AccessDeniedPath = new PathString("/api/contests");
+
+    // Not creating a new object since ASP.NET Identity has created
+    // one already and hooked to the OnValidatePrincipal event.
+    // See https://github.com/aspnet/AspNetCore/blob/5a64688d8e192cacffda9440e8725c1ed41a30cf/src/Identity/src/Identity/IdentityServiceCollectionExtensions.cs#L56
+    options.Events.OnRedirectToLogin = context =>
+    {
+        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+        return Task.CompletedTask;
+    };
+});
+
+builder.Services.AddDbContext<Database>(options => options.UseSqlite($"Data Source=./database.db"));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,7 +64,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllers();
+app.MapIdentityApi<User>();
 
 app.Run();
