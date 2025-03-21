@@ -10,3 +10,11 @@ To apply the latest migrations and update the database, run:
 ```sh
  dotnet ef database update
 ```
+
+## Hot Reload
+
+untuk hot reload, run dengan command
+
+```sh
+ dotnet watch run
+```
