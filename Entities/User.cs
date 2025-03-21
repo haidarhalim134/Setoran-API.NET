@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 
-class User: IdentityUser
+public class User: IdentityUser
 {
     
 }
+
