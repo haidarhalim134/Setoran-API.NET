@@ -56,4 +56,20 @@ public class Database: IdentityDbContext<Pengguna, IdentityRole<int>, int>
     //     options.UseLazyLoadingProxies(false);
 
     // }
+
+    public Pengguna? GetCurrentPengguna(HttpContext context)
+    {
+        return Pengguna.Where(itm => itm.UserName == context!.User!.Identity!.Name).FirstOrDefault();
+    }
+    public Pelanggan? GetCurrentPelanggan(HttpContext context)
+    {
+        var pengguna = GetCurrentPengguna(context);
+        if (pengguna != null)
+        {
+            Entry(pengguna).Reference(itm => itm.Pelanggan).Load();
+            return pengguna.Pelanggan;
+        }
+
+        return null;
+    }
 }
