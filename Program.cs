@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Newtonsoft.Json.Converters;
+using Setoran_API.NET.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +29,7 @@ builder.Services.AddAuthentication()
         option.BearerTokenExpiration = TimeSpan.FromDays(600);
     });
 
-builder.Services.AddIdentityCore<User>()
+builder.Services.AddIdentityCore<Pengguna>()
     .AddEntityFrameworkStores<Database>()
     .AddApiEndpoints();
 
@@ -67,6 +68,6 @@ app.UseAuthorization();
 app.UseAuthentication();
 
 app.MapControllers();
-app.MapIdentityApi<User>();
+app.MapIdentityApi<Pengguna>();
 
 app.Run();

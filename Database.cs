@@ -2,10 +2,13 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using dotenv;
 using dotenv.net;
+using Setoran_API.NET.Models;
+using Microsoft.AspNetCore.Identity;
 
-class Database: IdentityDbContext<User>
+public class Database: IdentityDbContext<Pengguna, IdentityRole<int>, int>
 {
-    public DbSet<User> Users { get; set; }
+    public DbSet<Pengguna> Pengguna { get; set; }
+    public DbSet<Pelanggan> Pelanggan { get; set; }
 
     public Database()
     {
@@ -19,6 +22,11 @@ class Database: IdentityDbContext<User>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Pelanggan>()
+            .HasOne(e => e.Pengguna)
+            .WithOne(e => e.Pelanggan)
+            .HasForeignKey<Pelanggan>(p => p.IdPengguna);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)

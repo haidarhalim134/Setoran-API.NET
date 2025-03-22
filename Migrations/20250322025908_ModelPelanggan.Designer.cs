@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Setoran_API.NET.Migrations
 {
     [DbContext(typeof(Database))]
-    partial class DatabaseModelSnapshot : ModelSnapshot
+    [Migration("20250322025908_ModelPelanggan")]
+    partial class ModelPelanggan
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.3");
@@ -153,9 +156,6 @@ namespace Setoran_API.NET.Migrations
 
                     b.HasKey("IdPelanggan");
 
-                    b.HasIndex("IdPengguna")
-                        .IsUnique();
-
                     b.ToTable("Pelanggan");
                 });
 
@@ -273,22 +273,6 @@ namespace Setoran_API.NET.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Setoran_API.NET.Models.Pelanggan", b =>
-                {
-                    b.HasOne("Setoran_API.NET.Models.Pengguna", "Pengguna")
-                        .WithOne("Pelanggan")
-                        .HasForeignKey("Setoran_API.NET.Models.Pelanggan", "IdPengguna")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Pengguna");
-                });
-
-            modelBuilder.Entity("Setoran_API.NET.Models.Pengguna", b =>
-                {
-                    b.Navigation("Pelanggan");
                 });
 #pragma warning restore 612, 618
         }
