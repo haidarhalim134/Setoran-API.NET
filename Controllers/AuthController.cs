@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Setoran_API.NET.Models;
 
 namespace Setoran_API.NET.Controllers;
 
@@ -7,33 +8,46 @@ namespace Setoran_API.NET.Controllers;
 [Route("[controller]")]
 public class AuthController : ControllerBase
 {    
-    private readonly SignInManager<IdentityUser> _signInManager;
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly SignInManager<Pengguna> _signInManager;
+    private readonly UserManager<Pengguna> _userManager;
 
-    public AuthController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
+    public AuthController(SignInManager<Pengguna> signInManager, UserManager<Pengguna> userManager)
     {
         _signInManager = signInManager;
         _userManager = userManager;
     }
-    
-    // sample
-    [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] dynamic loginDto)
+
+    [HttpPost("register")]
+    public async Task<IActionResult> Register(Database db, [FromBody] RegisterForm request)
     {
-        var user = await _userManager.FindByEmailAsync(loginDto.Email);
-        if (user == null)
+        if (!ModelState.IsValid)
         {
-            return Unauthorized(new { message = "Invalid email or password" });
+            return BadRequest(ModelState);
         }
 
-        var result = await _signInManager.PasswordSignInAsync(user, loginDto.Password, false, false);
+        var user = new Pengguna
+        {
+            UserName = request.email,
+            Email = request.email,
+        };
+
+        var result = await _userManager.CreateAsync(user, request.password);
+
         if (!result.Succeeded)
         {
-            return Unauthorized(new { message = "Invalid email or password" });
+            return BadRequest(result.Errors);
         }
 
-        // You can return a JWT token here if needed
-        return Ok(new { message = "Login successful", userId = user.Id });
-    }  
+        // Create Pelanggan entry
+        var pelanggan = new Pelanggan
+        {
+            IdPengguna = user.Id
+        };
+        db.Pelanggan.Add(pelanggan);
+
+        await db.SaveChangesAsync();
+
+        return Ok(new { Message = "Registrasi Berhasil!", User = user });
+    }
 }
 

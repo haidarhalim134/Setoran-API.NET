@@ -29,7 +29,12 @@ builder.Services.AddAuthentication()
         option.BearerTokenExpiration = TimeSpan.FromDays(600);
     });
 
-builder.Services.AddIdentityCore<Pengguna>()
+builder.Services.AddIdentityCore<Pengguna>(options => 
+    {
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireDigit = false;
+        options.Password.RequireUppercase = false;
+    })
     .AddEntityFrameworkStores<Database>()
     .AddApiEndpoints();
 
