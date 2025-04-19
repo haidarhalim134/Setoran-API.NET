@@ -30,32 +30,41 @@ public class Database: IdentityDbContext<Pengguna, IdentityRole<int>, int>
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
-    => options
-        .UseSqlite($"Data Source=./database.db")
-        .UseLazyLoadingProxies(false);
-    // {
+    // => options
+    //     .UseSqlite($"Data Source=./database.db")
+    //     .UseLazyLoadingProxies(false).
+    //     UseSeeding((context, _) => {
+
+    //     });
+    {
     //     kalau udah punya postgres
-    //     DotEnv.Load(); // Load environment variables from .env
-    //     var envVars = DotEnv.Read();
+        DotEnv.Load(); // Load environment variables from .env
 
-    //     string host = envVars["DB_HOST"];
-    //     string port = envVars["DB_PORT"];
-    //     string dbName = envVars["DB_NAME"];
-    //     string user = envVars["DB_USER"];
-    //     string password = envVars["DB_PASSWORD"];
+        string host = Environment.GetEnvironmentVariable("DB_HOST");
+        string port = Environment.GetEnvironmentVariable("DB_PORT");
+        string dbName = Environment.GetEnvironmentVariable("DB_NAME");
+        string user = Environment.GetEnvironmentVariable("DB_USER");
+        string password = Environment.GetEnvironmentVariable("DB_PASSWORD");
 
-    //     if (string.IsNullOrEmpty(host) || string.IsNullOrEmpty(dbName) || 
-    //         string.IsNullOrEmpty(user) || string.IsNullOrEmpty(password))
-    //     {
-    //         throw new Exception("Database connection variables are missing!");
-    //     }
+        if (string.IsNullOrEmpty(host) || string.IsNullOrEmpty(dbName) || 
+            string.IsNullOrEmpty(user) || string.IsNullOrEmpty(password))
+        {   
+            // fallback pake sqlite local
+            options.UseSqlite($"Data Source=./database.db");
+            // throw new Exception("Database connection variables are missing!");
+        } else 
+        {
+            string connectionString = $"Host={host};Port={port};Database={dbName};Username={user};Password={password}";
 
-    //     string connectionString = $"Host={host};Port={port};Database={dbName};Username={user};Password={password}";
+            options.UseNpgsql(connectionString);
+        }
 
-    //     options.UseNpgsql(connectionString);
-    //     options.UseLazyLoadingProxies(false);
+        options.UseLazyLoadingProxies(false);
+        options.UseSeeding((context, _) => {
 
-    // }
+        });
+
+    }
 
     public Pengguna? GetCurrentPengguna(HttpContext context)
     {
