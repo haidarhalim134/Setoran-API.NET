@@ -5,7 +5,7 @@ using dotenv.net;
 using Setoran_API.NET.Models;
 using Microsoft.AspNetCore.Identity;
 
-public class Database: IdentityDbContext<Pengguna, IdentityRole<int>, int>
+public class Database: IdentityDbContext
 {
     public DbSet<Pengguna> Pengguna { get; set; }
     public DbSet<Pelanggan> Pelanggan { get; set; }
@@ -61,7 +61,7 @@ public class Database: IdentityDbContext<Pengguna, IdentityRole<int>, int>
             // throw new Exception("Database connection variables are missing!");
         } else 
         {
-            string connectionString = $"Host={host};Port={port};Database={dbName};Username={user};Password={password}";
+            string connectionString = $"Host={host};Port={port};Database={dbName};Username={user};Password={password};SSL Mode=Require;Trust Server Certificate=True";
 
             options.UseNpgsql(connectionString);
         }

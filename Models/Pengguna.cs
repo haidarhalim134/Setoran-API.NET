@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Setoran_API.NET.Models;
 
-public class Pengguna: IdentityUser<int>
+public class Pengguna: IdentityUser
 {
     public Pelanggan? Pelanggan { get; set; }
     public string Nama { get; set; }

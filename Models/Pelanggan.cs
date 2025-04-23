@@ -7,7 +7,7 @@ public class Pelanggan
 {
     [Key]
     public int IdPelanggan { get; set; }
-    public int IdPengguna { get; set; }
+    public string IdPengguna { get; set; }
     public Pengguna Pengguna { get; set; }
     public string NomorSIM { get; set; }
 }

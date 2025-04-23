@@ -56,7 +56,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     };
 });
 
-builder.Services.AddDbContext<Database>(options => options.UseSqlite($"Data Source=./database.db"));
+builder.Services.AddDbContext<Database>();
 
 builder.Services.AddSwaggerGen(opt =>
 {
