@@ -9,4 +9,5 @@ public class Pelanggan
     public int IdPelanggan { get; set; }
     public int IdPengguna { get; set; }
     public Pengguna Pengguna { get; set; }
+    public string NomorSIM { get; set; }
 }

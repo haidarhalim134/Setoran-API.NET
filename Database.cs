@@ -9,6 +9,13 @@ public class Database: IdentityDbContext<Pengguna, IdentityRole<int>, int>
 {
     public DbSet<Pengguna> Pengguna { get; set; }
     public DbSet<Pelanggan> Pelanggan { get; set; }
+    public DbSet<Mitra> Mitra { get; set; }
+    public DbSet<Transaksi> Transaksi { get; set; }
+    public DbSet<Pembayaran> Pembayaran { get; set; }
+    public DbSet<Voucher> Voucher { get; set; }
+    public DbSet<Ulasan> Ulasan { get; set; }
+    public DbSet<Motor> Motor { get; set; }
+    public DbSet<Diskon> Diskon { get; set; }
 
     public Database()
     {
