@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Setoran_API.NET.Migrations
 {
     [DbContext(typeof(Database))]
-    partial class DatabaseModelSnapshot : ModelSnapshot
+    [Migration("20250424094149_change-nomorsim-to-nullable")]
+    partial class changenomorsimtonullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.3");
@@ -463,31 +466,7 @@ namespace Setoran_API.NET.Migrations
 
                     b.HasKey("IdVoucher");
 
-                    b.HasIndex("KodeVoucher")
-                        .IsUnique();
-
                     b.ToTable("Voucher");
-                });
-
-            modelBuilder.Entity("Setoran_API.NET.Models.VoucherUsed", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IdPelanggan")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IdVoucher")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdPelanggan");
-
-                    b.HasIndex("IdVoucher");
-
-                    b.ToTable("VoucherUsed");
                 });
 
             modelBuilder.Entity("Setoran_API.NET.Models.Pengguna", b =>
@@ -651,25 +630,6 @@ namespace Setoran_API.NET.Migrations
                     b.Navigation("Motor");
 
                     b.Navigation("Pelanggan");
-                });
-
-            modelBuilder.Entity("Setoran_API.NET.Models.VoucherUsed", b =>
-                {
-                    b.HasOne("Setoran_API.NET.Models.Pelanggan", "Pelanggan")
-                        .WithMany()
-                        .HasForeignKey("IdPelanggan")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Setoran_API.NET.Models.Voucher", "Voucher")
-                        .WithMany()
-                        .HasForeignKey("IdVoucher")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Pelanggan");
-
-                    b.Navigation("Voucher");
                 });
 
             modelBuilder.Entity("Setoran_API.NET.Models.Pengguna", b =>

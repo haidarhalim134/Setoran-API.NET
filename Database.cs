@@ -5,7 +5,7 @@ using dotenv.net;
 using Setoran_API.NET.Models;
 using Microsoft.AspNetCore.Identity;
 
-public class Database: IdentityDbContext
+public class Database : IdentityDbContext
 {
     public DbSet<Pengguna> Pengguna { get; set; }
     public DbSet<Pelanggan> Pelanggan { get; set; }
@@ -49,7 +49,7 @@ public class Database: IdentityDbContext
 
     //     });
     {
-    //     kalau udah punya postgres
+        //     kalau udah punya postgres
         DotEnv.Load(); // Load environment variables from .env
 
         string host = Environment.GetEnvironmentVariable("DB_HOST");
@@ -58,21 +58,23 @@ public class Database: IdentityDbContext
         string user = Environment.GetEnvironmentVariable("DB_USER");
         string password = Environment.GetEnvironmentVariable("DB_PASSWORD");
 
-        if (string.IsNullOrEmpty(host) || string.IsNullOrEmpty(dbName) || 
+        if (string.IsNullOrEmpty(host) || string.IsNullOrEmpty(dbName) ||
             string.IsNullOrEmpty(user) || string.IsNullOrEmpty(password))
-        {   
+        {
             // fallback pake sqlite local
             options.UseSqlite($"Data Source=./database.db");
             // throw new Exception("Database connection variables are missing!");
-        } else 
+        }
+        else
         {
-            string connectionString = $"Host={host};Port={port};Database={dbName};Username={user};Password={password};SSL Mode=Require;Trust Server Certificate=True";
+            string connectionString = $"Host={host};Port={port};Database={dbName};Username={user};Password={password};SSL Mode=Prefer;Trust Server Certificate=True";
 
             options.UseNpgsql(connectionString);
         }
 
         options.UseLazyLoadingProxies(false);
-        options.UseSeeding((context, _) => {
+        options.UseSeeding((context, _) =>
+        {
 
         });
 
