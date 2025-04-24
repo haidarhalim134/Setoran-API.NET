@@ -24,6 +24,13 @@ builder.Services.AddControllersWithViews()
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
         });
 
+builder.Services.AddControllers()
+    .AddJsonOptions(options => { 
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); 
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        // options.JsonSerializerOptions.refe
+        });
+
 builder.Services.AddAuthentication()
     // .AddCookie(IdentityConstants.ApplicationScheme)
     .AddBearerToken(IdentityConstants.BearerScheme, option => {

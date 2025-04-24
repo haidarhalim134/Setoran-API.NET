@@ -27,6 +27,7 @@ public class AuthController : ControllerBase
 
         var user = new Pengguna
         {
+            Nama=request.nama,
             UserName = request.email,
             Email = request.email,
         };
@@ -41,7 +42,8 @@ public class AuthController : ControllerBase
         // Create Pelanggan entry
         var pelanggan = new Pelanggan
         {
-            IdPengguna = user.Id
+            IdPengguna = user.Id,
+            NomorSIM = ""
         };
         db.Pelanggan.Add(pelanggan);
 
