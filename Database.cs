@@ -13,6 +13,7 @@ public class Database : IdentityDbContext
     public DbSet<Transaksi> Transaksi { get; set; }
     public DbSet<Pembayaran> Pembayaran { get; set; }
     public DbSet<Voucher> Voucher { get; set; }
+    public DbSet<VoucherUsed> VoucherUsed { get; set; }
     public DbSet<Ulasan> Ulasan { get; set; }
     public DbSet<Motor> Motor { get; set; }
     public DbSet<Diskon> Diskon { get; set; }
@@ -34,6 +35,10 @@ public class Database : IdentityDbContext
             .HasOne(e => e.Pengguna)
             .WithOne(e => e.Pelanggan)
             .HasForeignKey<Pelanggan>(p => p.IdPengguna);
+
+        modelBuilder.Entity<Voucher>()   
+            .HasIndex(u => u.KodeVoucher)
+            .IsUnique();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
