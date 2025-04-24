@@ -19,7 +19,7 @@ public class VoucherController : GenericControllerEXtension<Voucher>
     public List<Voucher> GetActive(Database db)
     {
         // assume requester sudah ter registrasi sebagai pelanggan
-        return Voucher.GetActive(db, db.GetCurrentPelanggan(HttpContext)).ToList();
+        return Voucher.GetActive(db, HttpContext.GetCurrentPelanggan(db)).ToList();
     }
 
     [Authorize]
@@ -27,7 +27,7 @@ public class VoucherController : GenericControllerEXtension<Voucher>
     public ActionResult<CheckVoucherDTO> CheckVoucher(Database db, [FromRoute] string code)
     {
         // assume requester sudah ter registrasi sebagai pelanggan
-        var voucher = Voucher.GetActive(db, db.GetCurrentPelanggan(HttpContext)).FirstOrDefault(v => v.KodeVoucher == code);
+        var voucher = Voucher.GetActive(db, HttpContext.GetCurrentPelanggan(db)).FirstOrDefault(v => v.KodeVoucher == code);
         if (voucher == null)
             return new CheckVoucherDTO {Valid=false};
 

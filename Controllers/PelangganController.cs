@@ -13,6 +13,6 @@ public class PelangganController : ControllerBase
     [HttpGet("currentPelanggan")]
     public Pelanggan? CurrentPelanggan(Database db)
     {
-        return db.GetCurrentPelanggan(HttpContext);
+        return HttpContext.GetCurrentPelanggan(db);
     }
 }
