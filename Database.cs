@@ -35,6 +35,10 @@ public class Database: IdentityDbContext
             .HasOne(e => e.Pengguna)
             .WithOne(e => e.Pelanggan)
             .HasForeignKey<Pelanggan>(p => p.IdPengguna);
+
+        modelBuilder.Entity<Voucher>()   
+            .HasIndex(u => u.KodeVoucher)
+            .IsUnique();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
