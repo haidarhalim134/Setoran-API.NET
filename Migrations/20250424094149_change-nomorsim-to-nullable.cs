@@ -11,22 +11,8 @@ namespace Setoran_API.NET.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "TanggalMulai",
-                table: "Voucher",
-                type: "TEXT",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp with time zone");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "TanggalAkhir",
-                table: "Voucher",
-                type: "TEXT",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp with time zone");
-
+            
+            
             migrationBuilder.AlterColumn<int>(
                 name: "StatusVoucher",
                 table: "Voucher",
@@ -69,14 +55,7 @@ namespace Setoran_API.NET.Migrations
                 .Annotation("Sqlite:Autoincrement", true)
                 .OldAnnotation("Sqlite:Autoincrement", true);
 
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "TanggalUlasan",
-                table: "Ulasan",
-                type: "TEXT",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp with time zone");
-
+            
             migrationBuilder.AlterColumn<int>(
                 name: "Rating",
                 table: "Ulasan",
@@ -127,22 +106,8 @@ namespace Setoran_API.NET.Migrations
                 oldClrType: typeof(decimal),
                 oldType: "numeric");
 
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "TanggalSelesai",
-                table: "Transaksi",
-                type: "TEXT",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp with time zone");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "TanggalMulai",
-                table: "Transaksi",
-                type: "TEXT",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp with time zone");
-
+            
+            
             migrationBuilder.AlterColumn<string>(
                 name: "Status",
                 table: "Transaksi",
@@ -177,14 +142,7 @@ namespace Setoran_API.NET.Migrations
                 .Annotation("Sqlite:Autoincrement", true)
                 .OldAnnotation("Sqlite:Autoincrement", true);
 
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "TanggalPembayaran",
-                table: "Pembayaran",
-                type: "TEXT",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp with time zone");
-
+            
             migrationBuilder.AlterColumn<string>(
                 name: "StatusPembayaran",
                 table: "Pembayaran",
@@ -388,22 +346,8 @@ namespace Setoran_API.NET.Migrations
                 .Annotation("Sqlite:Autoincrement", true)
                 .OldAnnotation("Sqlite:Autoincrement", true);
 
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "TanggalMulai",
-                table: "Diskon",
-                type: "TEXT",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp with time zone");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "TanggalAkhir",
-                table: "Diskon",
-                type: "TEXT",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp with time zone");
-
+            
+            
             migrationBuilder.AlterColumn<string>(
                 name: "StatusPromo",
                 table: "Diskon",
@@ -483,23 +427,8 @@ namespace Setoran_API.NET.Migrations
                 oldType: "integer",
                 oldNullable: true);
 
-            migrationBuilder.AlterColumn<bool>(
-                name: "TwoFactorEnabled",
-                table: "AspNetUsers",
-                type: "INTEGER",
-                nullable: false,
-                oldClrType: typeof(bool),
-                oldType: "boolean");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "TanggalLahir",
-                table: "AspNetUsers",
-                type: "TEXT",
-                nullable: true,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp with time zone",
-                oldNullable: true);
-
+            
+            
             migrationBuilder.AlterColumn<string>(
                 name: "SecurityStamp",
                 table: "AspNetUsers",
@@ -509,14 +438,7 @@ namespace Setoran_API.NET.Migrations
                 oldType: "text",
                 oldNullable: true);
 
-            migrationBuilder.AlterColumn<bool>(
-                name: "PhoneNumberConfirmed",
-                table: "AspNetUsers",
-                type: "INTEGER",
-                nullable: false,
-                oldClrType: typeof(bool),
-                oldType: "boolean");
-
+            
             migrationBuilder.AlterColumn<string>(
                 name: "PhoneNumber",
                 table: "AspNetUsers",
@@ -584,23 +506,8 @@ namespace Setoran_API.NET.Migrations
                 oldType: "text",
                 oldNullable: true);
 
-            migrationBuilder.AlterColumn<DateTimeOffset>(
-                name: "LockoutEnd",
-                table: "AspNetUsers",
-                type: "TEXT",
-                nullable: true,
-                oldClrType: typeof(DateTimeOffset),
-                oldType: "timestamp with time zone",
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<bool>(
-                name: "LockoutEnabled",
-                table: "AspNetUsers",
-                type: "INTEGER",
-                nullable: false,
-                oldClrType: typeof(bool),
-                oldType: "boolean");
-
+            
+            
             migrationBuilder.AlterColumn<int>(
                 name: "IdGambar",
                 table: "AspNetUsers",
@@ -610,14 +517,7 @@ namespace Setoran_API.NET.Migrations
                 oldType: "integer",
                 oldNullable: true);
 
-            migrationBuilder.AlterColumn<bool>(
-                name: "EmailConfirmed",
-                table: "AspNetUsers",
-                type: "INTEGER",
-                nullable: false,
-                oldClrType: typeof(bool),
-                oldType: "boolean");
-
+            
             migrationBuilder.AlterColumn<string>(
                 name: "Email",
                 table: "AspNetUsers",
@@ -837,22 +737,8 @@ namespace Setoran_API.NET.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "TanggalMulai",
-                table: "Voucher",
-                type: "timestamp with time zone",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "TEXT");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "TanggalAkhir",
-                table: "Voucher",
-                type: "timestamp with time zone",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "TEXT");
-
+            
+            
             migrationBuilder.AlterColumn<int>(
                 name: "StatusVoucher",
                 table: "Voucher",
@@ -895,14 +781,7 @@ namespace Setoran_API.NET.Migrations
                 .Annotation("Sqlite:Autoincrement", true)
                 .OldAnnotation("Sqlite:Autoincrement", true);
 
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "TanggalUlasan",
-                table: "Ulasan",
-                type: "timestamp with time zone",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "TEXT");
-
+            
             migrationBuilder.AlterColumn<int>(
                 name: "Rating",
                 table: "Ulasan",
@@ -953,22 +832,8 @@ namespace Setoran_API.NET.Migrations
                 oldClrType: typeof(decimal),
                 oldType: "TEXT");
 
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "TanggalSelesai",
-                table: "Transaksi",
-                type: "timestamp with time zone",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "TEXT");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "TanggalMulai",
-                table: "Transaksi",
-                type: "timestamp with time zone",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "TEXT");
-
+            
+            
             migrationBuilder.AlterColumn<string>(
                 name: "Status",
                 table: "Transaksi",
@@ -1003,14 +868,7 @@ namespace Setoran_API.NET.Migrations
                 .Annotation("Sqlite:Autoincrement", true)
                 .OldAnnotation("Sqlite:Autoincrement", true);
 
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "TanggalPembayaran",
-                table: "Pembayaran",
-                type: "timestamp with time zone",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "TEXT");
-
+            
             migrationBuilder.AlterColumn<string>(
                 name: "StatusPembayaran",
                 table: "Pembayaran",
@@ -1216,22 +1074,8 @@ namespace Setoran_API.NET.Migrations
                 .Annotation("Sqlite:Autoincrement", true)
                 .OldAnnotation("Sqlite:Autoincrement", true);
 
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "TanggalMulai",
-                table: "Diskon",
-                type: "timestamp with time zone",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "TEXT");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "TanggalAkhir",
-                table: "Diskon",
-                type: "timestamp with time zone",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "TEXT");
-
+            
+            
             migrationBuilder.AlterColumn<string>(
                 name: "StatusPromo",
                 table: "Diskon",
@@ -1311,14 +1155,7 @@ namespace Setoran_API.NET.Migrations
                 oldType: "INTEGER",
                 oldNullable: true);
 
-            migrationBuilder.AlterColumn<bool>(
-                name: "TwoFactorEnabled",
-                table: "AspNetUsers",
-                type: "boolean",
-                nullable: false,
-                oldClrType: typeof(bool),
-                oldType: "INTEGER");
-
+            
             migrationBuilder.AlterColumn<DateTime>(
                 name: "TanggalLahir",
                 table: "AspNetUsers",
@@ -1337,14 +1174,7 @@ namespace Setoran_API.NET.Migrations
                 oldType: "TEXT",
                 oldNullable: true);
 
-            migrationBuilder.AlterColumn<bool>(
-                name: "PhoneNumberConfirmed",
-                table: "AspNetUsers",
-                type: "boolean",
-                nullable: false,
-                oldClrType: typeof(bool),
-                oldType: "INTEGER");
-
+            
             migrationBuilder.AlterColumn<string>(
                 name: "PhoneNumber",
                 table: "AspNetUsers",
@@ -1421,14 +1251,7 @@ namespace Setoran_API.NET.Migrations
                 oldType: "TEXT",
                 oldNullable: true);
 
-            migrationBuilder.AlterColumn<bool>(
-                name: "LockoutEnabled",
-                table: "AspNetUsers",
-                type: "boolean",
-                nullable: false,
-                oldClrType: typeof(bool),
-                oldType: "INTEGER");
-
+            
             migrationBuilder.AlterColumn<int>(
                 name: "IdGambar",
                 table: "AspNetUsers",
@@ -1438,14 +1261,7 @@ namespace Setoran_API.NET.Migrations
                 oldType: "INTEGER",
                 oldNullable: true);
 
-            migrationBuilder.AlterColumn<bool>(
-                name: "EmailConfirmed",
-                table: "AspNetUsers",
-                type: "boolean",
-                nullable: false,
-                oldClrType: typeof(bool),
-                oldType: "INTEGER");
-
+            
             migrationBuilder.AlterColumn<string>(
                 name: "Email",
                 table: "AspNetUsers",
