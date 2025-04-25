@@ -61,9 +61,7 @@ public class Database : IdentityDbContext
         if (string.IsNullOrEmpty(host) || string.IsNullOrEmpty(dbName) ||
             string.IsNullOrEmpty(user) || string.IsNullOrEmpty(password))
         {
-            // fallback pake sqlite local
-            options.UseSqlite($"Data Source=./database.db");
-            // throw new Exception("Database connection variables are missing!");
+            throw new Exception("Database connection variables are missing!");
         }
         else
         {
