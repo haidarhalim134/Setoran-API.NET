@@ -19,6 +19,7 @@ public class Database : IdentityDbContext
     public DbSet<Motor> Motor { get; set; }
     public DbSet<Diskon> Diskon { get; set; }
     public DbSet<Notifikasi> Notifikasi { get; set; }
+    public DbSet<DeviceToken> DeviceToken { get; set; }
 
     public Database()
     {
@@ -86,7 +87,7 @@ public class Database : IdentityDbContext
         options.UseLazyLoadingProxies(false);
         options.UseSeeding((context, _) =>
         {
-// berarti udah seed
+            // berarti udah seed
             if (context.Set<Pengguna>().Any())
                 return;
 
