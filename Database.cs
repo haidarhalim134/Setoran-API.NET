@@ -86,6 +86,10 @@ public class Database : IdentityDbContext
         options.UseLazyLoadingProxies(false);
         options.UseSeeding((context, _) =>
         {
+// berarti udah seed
+            if (context.Set<Pengguna>().Any())
+                return;
+
             // agak sumpek kalau seeding semua disini, mungkin refactor seeder setiap entity ke tempat terpisah (e.g. method-method) nanti
             static string hashPassword(Pengguna user, string password)
             {
