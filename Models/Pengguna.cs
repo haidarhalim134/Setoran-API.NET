@@ -6,6 +6,7 @@ public class Pengguna: IdentityUser
 {
     public Pelanggan? Pelanggan { get; set; }
     public List<Notifikasi> Notifikasis { get; set; }
+    public List<DeviceToken> DeviceTokens { get; set; }
     public string Nama { get; set; }
     public DateTime? TanggalLahir { get; set; }
     public string NomorTelepon { get; set; }
