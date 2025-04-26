@@ -47,6 +47,10 @@ public class AuthController : ControllerBase
         };
         db.Pelanggan.Add(pelanggan);
 
+        Notifikasi.CreateNotification(user.Id, "Selamat datang di aplikasi Setoran", "Silahkan selesaikan proses registrasi dengan melengkapi data-data anda di halaman edit profile")
+            .ToEditProfile()
+            .Send(db);
+
         await db.SaveChangesAsync();
 
         return Ok(new { Message = "Registrasi Berhasil!", User = user });

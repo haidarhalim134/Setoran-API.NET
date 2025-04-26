@@ -5,6 +5,7 @@ namespace Setoran_API.NET.Models;
 public class Pengguna: IdentityUser
 {
     public Pelanggan? Pelanggan { get; set; }
+    public List<Notifikasi> Notifikasis { get; set; }
     public string Nama { get; set; }
     public DateTime? TanggalLahir { get; set; }
     public string NomorTelepon { get; set; }
