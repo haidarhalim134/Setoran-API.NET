@@ -62,5 +62,35 @@ namespace Setoran_API.NET.Controllers
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetMotorById), new { id = motor.IdMotor }, motor);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateMotor(int id, [FromBody] PutMotorDTO request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var motor = await _context.Motor.FindAsync(id);
+            if (motor == null)
+            {
+                return NotFound();
+            }
+
+            motor.PlatNomor = request.PlatNomor;
+            motor.NomorSTNK = request.NomorSTNK;
+            motor.NomorBPKB = request.NomorBPKB;
+            motor.Model = request.Model;
+            motor.Brand = request.Brand;
+            motor.Tipe = request.Tipe;
+            motor.Tahun = request.Tahun;
+            motor.Transmisi = request.Transmisi;
+            motor.StatusMotor = request.StatusMotor;
+            motor.HargaHarian = request.HargaHarian;
+
+            _context.Motor.Update(motor);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }
