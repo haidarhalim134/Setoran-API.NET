@@ -17,14 +17,33 @@ namespace Setoran_API.NET.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetMotors()
+        public async Task<IActionResult> GetMotors([FromQuery] MotorQuery query)
         {
-            var motors = await _context.Motor.ToListAsync();
+            var motors = _context.Motor.AsQueryable();
+            if (!string.IsNullOrEmpty(query.IdMitra))
+            {
+                motors = motors.Where(m => m.IdMitra.ToString() == query.IdMitra);
+            }
+            if (!string.IsNullOrEmpty(query.Status))
+            {
+                motors = motors.Where(m => m.StatusMotor == query.Status);
+            }
+            if (!string.IsNullOrEmpty(query.Model))
+            {
+                motors = motors.Where(m => m.Model == query.Model);
+            }
+            if (!string.IsNullOrEmpty(query.Transmisi))
+            {
+                motors = motors.Where(m => m.Transmisi == query.Transmisi);
+            }
+
+            var result = await motors.ToListAsync();
+
             // return Ok(motors);
             return Ok(new
             {
                 succes = true,
-                data = motors,
+                data = result,
             });
         }
 
