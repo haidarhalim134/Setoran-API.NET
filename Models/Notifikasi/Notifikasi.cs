@@ -14,7 +14,7 @@ public class Notifikasi
 
     [DefaultValue(TargetNavigasi.None)]
     public TargetNavigasi Navigasi { get; set; } = TargetNavigasi.None;
-    public string? DataNavigasi { get; set; }
+    public Dictionary<string, string>? DataNavigasi { get; set; }
 
     [DefaultValue(false)]
     public bool IsRead { get; set; } = false;
@@ -35,7 +35,7 @@ public class Notifikasi
     public Notifikasi ToTransaksi(int idTransaksi)
     {
         Navigasi = TargetNavigasi.Transaksi;
-        DataNavigasi = idTransaksi.ToString();
+        DataNavigasi = new Dictionary<string, string> { {"id_transaksi", idTransaksi.ToString()}};
 
         return this;
     }

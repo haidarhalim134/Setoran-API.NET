@@ -5,6 +5,7 @@ using dotenv.net;
 using Setoran_API.NET.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Newtonsoft.Json;
 
 public class Database : IdentityDbContext
 {
@@ -53,6 +54,14 @@ public class Database : IdentityDbContext
         modelBuilder.Entity<Voucher>()   
             .HasIndex(u => u.KodeVoucher)
             .IsUnique();
+
+        modelBuilder.Entity<Notifikasi>()
+            .Property(b => b.DataNavigasi)
+            .HasConversion(
+                v => v == null ? null : JsonConvert.SerializeObject(v),
+                v => string.IsNullOrEmpty(v) 
+                    ? null 
+                    : JsonConvert.DeserializeObject<Dictionary<string, string>>(v));
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
