@@ -13,6 +13,11 @@ namespace Setoran_API.NET.Models
         public int PersenVoucher { get; set; }
         public string KodeVoucher { get; set; }
 
+        /// <summary>
+        /// list pelanggan yang pernah menggunakan voucher ini
+        /// </summary>
+        public List<Pelanggan> Pelanggans { get; set; }
+
         public static IQueryable<Voucher> GetActive(Database db, Pelanggan pelanggan)
         {
             return db.Voucher

@@ -51,6 +51,11 @@ public class Database : IdentityDbContext
             .WithMany(e => e.DeviceTokens)
             .HasForeignKey(p => p.IdPengguna);
 
+        modelBuilder.Entity<Voucher>()
+            .HasMany(e => e.Pelanggans)
+            .WithMany(e => e.UsedVouchers)
+            .UsingEntity<VoucherUsed>();
+
         modelBuilder.Entity<Voucher>()   
             .HasIndex(u => u.KodeVoucher)
             .IsUnique();

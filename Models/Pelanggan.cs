@@ -10,4 +10,9 @@ public class Pelanggan
     public string IdPengguna { get; set; }
     public Pengguna Pengguna { get; set; }
     public string? NomorSIM { get; set; }
+
+    /// <summary>
+    /// list voucher yang pernah digunakan pelanggan ini
+    /// </summary>
+    public List<Voucher> UsedVouchers { get; set; }
 }
