@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Setoran_API.NET.Models;
 
 namespace Setoran_API.NET.Controllers
@@ -23,6 +24,34 @@ namespace Setoran_API.NET.Controllers
             {
                 return NotFound("Pembayaran tidak ditemukan");
             }
+            return Ok(pembayaran);
+        }
+
+        // [Authorize]
+        [HttpGet]
+        public async Task<ActionResult<List<Pembayaran>>> GetAll()
+        {
+            var pembayarans = await _context.Pembayaran.ToListAsync();
+            if (!pembayarans.Any())
+            {
+                return NotFound(new { message = "Data pembayaran kosong" });
+            }
+
+            return Ok(pembayarans);
+        }
+
+        // [Authorize]
+        [HttpGet("transaksi/{id}")]
+        public async Task<ActionResult<Pembayaran>> GetByTransaksiId(int id)
+        {
+            var pembayaran = await _context.Pembayaran
+                .FirstOrDefaultAsync(p => p.IdTransaksi == id);
+            
+            if (pembayaran == null)
+            {
+                return NotFound(new { message = "Pembayaran tidak ditemukan" });
+            }
+
             return Ok(pembayaran);
         }
 
