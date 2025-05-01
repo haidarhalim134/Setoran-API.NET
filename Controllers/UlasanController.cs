@@ -19,12 +19,8 @@ namespace Setoran_API.NET.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUlasan()
         {
-            var ulasan = await _context.Ulasan.ToListAsync();
-            return Ok(new
-            {
-                success = true,
-                data = ulasan,
-            });
+            var ulasans = await _context.Ulasan.ToListAsync();
+            return Ok(ulasans);
         }
 
         [HttpGet("{id}")]
@@ -33,13 +29,9 @@ namespace Setoran_API.NET.Controllers
             var ulasan = await _context.Ulasan.FindAsync(id);
             if (ulasan == null)
             {
-                return NotFound(new { success = false, message = "Ulasan tidak ditemukan" });
+                return NotFound("Ulasan tidak ditemukan");
             }
-            return Ok(new
-            {
-                success = true,
-                data = ulasan,
-            });
+            return Ok(ulasan);
         }
 
         [HttpPost]

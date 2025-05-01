@@ -44,11 +44,7 @@ namespace Setoran_API.NET.Controllers
 
             var result = await transaksis.ToListAsync();
 
-            return Ok(new
-            {
-                succsess = true,
-                data = result,
-            });
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -57,13 +53,9 @@ namespace Setoran_API.NET.Controllers
             var transaksi = await _context.Transaksi.FindAsync(id);
             if (transaksi == null)
             {
-                return NotFound(new { success = false, message = "Transaksi tidak ditemukan" });
+                return NotFound("Transaksi tidak ditemukan");
             }
-            return Ok(new
-            {
-                success = true,
-                data = transaksi,
-            });
+            return Ok(transaksi);
         }
 
         [HttpPost]
@@ -77,11 +69,11 @@ namespace Setoran_API.NET.Controllers
             var motor = await _context.Motor.FindAsync(transaksi.IdMotor);
             if (motor == null)
             {
-                return NotFound(new { success = false, message = "Motor tidak ditemukan" });
+                return NotFound("Motor tidak ditemukan");
             }
             if (motor.StatusMotor != "Tersedia")
             {
-                return BadRequest(new { success = false, message = "Motor tidak tersedia" });
+                return BadRequest("Motor tidak tersedia");
             }
 
             var totalHarga = motor.HargaHarian * (transaksi.TanggalSelesai - transaksi.TanggalMulai).Days;
@@ -107,17 +99,13 @@ namespace Setoran_API.NET.Controllers
             var transaksi = await _context.Transaksi.FindAsync(id);
             if (transaksi == null)
             {
-                return NotFound(new { success = false, message = "Transaksi tidak ditemukan" });
+                return NotFound("Transaksi tidak ditemukan");
             }
 
             transaksi.Status = status;
             await _context.SaveChangesAsync();
 
-            return Ok(new
-            {
-                success = true,
-                data = transaksi,
-            });
+            return Ok(transaksi);
         }
     }
 }

@@ -39,19 +39,34 @@ namespace Setoran_API.NET.Controllers
 
             var result = await motors.ToListAsync();
 
-            // return Ok(motors);
-            return Ok(new
-            {
-                succes = true,
-                data = result,
-            });
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetMotorById(int id)
         {
             var motor = await _context.Motor.FindAsync(id);
+            if (motor == null)
+            {
+                return NotFound("Motor tidak ditemukan");
+            }
             return Ok(motor);
+
+        }
+
+        [HttpGet("{id}/ulasans")]
+        public async Task<IActionResult> GetUlasanByMotorId(int id)
+        {
+            var motor = await _context.Motor.FindAsync(id);
+
+            if (motor == null)
+            {
+                return NotFound("Motor tidak ditemukan");
+            }
+
+            var ulasans = await _context.Ulasan.Where(u => u.IdMotor == id).ToListAsync();
+
+            return Ok(ulasans);
         }
 
         [HttpPost]
@@ -93,7 +108,7 @@ namespace Setoran_API.NET.Controllers
             var motor = await _context.Motor.FindAsync(id);
             if (motor == null)
             {
-                return NotFound();
+                return NotFound("Motor tidak ditemukan");
             }
 
             motor.PlatNomor = request.PlatNomor;
