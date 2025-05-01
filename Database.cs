@@ -142,6 +142,9 @@ public class Database : IdentityDbContext
             
             context.Set<Notifikasi>().Add(notifikasi);
 
+            // repot nih
+            Setoran_API.NET.Models.Voucher.Seed(context);
+
             context.SaveChanges();
         });
 

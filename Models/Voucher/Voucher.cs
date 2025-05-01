@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using Bogus;
+using Microsoft.EntityFrameworkCore;
 
 namespace Setoran_API.NET.Models
 {
@@ -35,6 +37,50 @@ namespace Setoran_API.NET.Models
 
             db.Add(voucherUsed);
             db.SaveChanges();
+        }
+
+        public static void Seed(DbContext dbContext)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                var faker = new Faker("id_ID");
+
+                var tanggalMulai = faker.Date.PastOffset(1).UtcDateTime.Date;
+                var daysToAdd = faker.Random.Int(1, 10);
+                var tanggalAkhir = tanggalMulai.AddDays(daysToAdd);
+
+                var voucher = new Voucher
+                {
+                    NamaVoucher = string.Join(" ", faker.Lorem.Words(2)),
+                    StatusVoucher = faker.PickRandom(new[] { StatusVoucher.Aktif, StatusVoucher.NonAktif }),
+                    TanggalMulai = tanggalMulai,
+                    TanggalAkhir = tanggalAkhir,
+                    PersenVoucher = faker.Random.Int(5, 50),
+                    KodeVoucher = faker.Random.Replace("PROMO##??").ToUpper()
+                };
+
+                dbContext.Set<Voucher>().Add(voucher);
+                dbContext.SaveChanges();
+
+                var users = dbContext.Set<Pelanggan>().ToList();
+                foreach (var user in users)
+                {
+                    if (faker.Random.Bool(0.5f))
+                    {
+                        var createdAt = faker.Date.Between(voucher.TanggalMulai, voucher.TanggalAkhir);
+
+                        var voucherUsed = new VoucherUsed
+                        {
+                            Voucher = voucher,
+                            Pelanggan = user,
+                        };
+
+                        dbContext.Set<VoucherUsed>().Add(voucherUsed);
+                    }
+                }
+
+                dbContext.SaveChanges();
+            }
         }
     }
     public enum StatusVoucher
