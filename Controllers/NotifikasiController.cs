@@ -25,7 +25,7 @@ public class NotifikasiController : GenericControllerEXtension<Notifikasi>
     {
         var notifikasi = _db.Notifikasi.Find(id);
         if (notifikasi is null)
-            return NotFound("Notifikasi tidak ditemukan");
+            return NotFound(new {message = "Notifikasi tidak ditemukan"});
 
         notifikasi.IsRead = true;
         _db.SaveChanges();
@@ -38,7 +38,7 @@ public class NotifikasiController : GenericControllerEXtension<Notifikasi>
     public ActionResult RegisterDevice([FromQuery] string token)
     {
         if (token.IsNullOrEmpty())
-            return BadRequest("Token tidak valid");
+            return BadRequest(new {message = "Token tidak valid"});
 
         var pengguna = HttpContext.GetCurrentPengguna(_db);
 
@@ -59,7 +59,7 @@ public class NotifikasiController : GenericControllerEXtension<Notifikasi>
     {
         var target = _db.Pengguna.Find(notifikasi.IdPengguna);
         if (target is null)
-            return BadRequest("Pengguna penerima notifikasi tidak ditemukan");
+            return BadRequest(new {message = "Pengguna penerima notifikasi tidak ditemukan"});
 
         _db.Add(notifikasi.ToNotif());
         _db.SaveChanges();

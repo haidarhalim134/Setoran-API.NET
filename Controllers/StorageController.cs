@@ -22,7 +22,7 @@ public class StorageController : ControllerBase
     {
 
         if (file == null || file.Length == 0)
-            return BadRequest("No file uploaded.");
+            return BadRequest(new {message = "No file uploaded."});
 
         try {
             var fileName = _supabaseService.StoreFile("image", file);
@@ -45,11 +45,11 @@ public class StorageController : ControllerBase
                 .Download(fileName, (s, p) => {});
 
             if (response == null)
-                return NotFound("File not found.");
+                return NotFound(new {message = "File not found."});
 
             return File(response, "application/octet-stream", fileName);
         } catch {
-            return NotFound("File not found.");
+            return NotFound(new {message = "File not found."});
         }
 
     }
