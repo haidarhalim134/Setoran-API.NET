@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Setoran_API.NET.Models;
 
@@ -50,16 +51,34 @@ public class Notifikasi
         return this;
     }
 
-    public void Send(Database db)
+    public void Send(DbContext db, bool sendFcm=true)
     {
-        db.Notifikasi.Add(this);
+        db.Set<Notifikasi>().Add(this);
 
-        // var devices = db.DeviceToken.Where(itm => itm.Pengguna == Pengguna).ToList();
-        // foreach (var device in devices)
-        // {
-        //     // TODO: kirim notifikasi lewat firebase ke setiap device user ini
+        if (sendFcm) 
+        {
+            // var devices = db.Set<DeviceToken>().Where(itm => itm.Pengguna == Pengguna).ToList();
+            // foreach (var device in devices)
+            // {
+            //     // TODO: kirim notifikasi lewat firebase ke setiap device user ini
 
-        // }
+            // }
+        }
+
+    }
+
+    public static void Seed(DbContext dbContext)
+    {
+
+        var users = dbContext.Set<Pengguna>().ToList();
+        foreach (var user in users)
+        {
+            CreateNotification(user.Id, "Selamat datang di aplikasi Setoran", "Silahkan selesaikan proses registrasi dengan melengkapi data-data anda di halaman edit profile")
+                .ToEditProfile()
+                .Send(dbContext, false);
+        }
+
+        dbContext.SaveChanges();
     }
 }
 
