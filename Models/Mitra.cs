@@ -7,9 +7,15 @@ namespace Setoran_API.NET.Models
     {
         [Key]
         public int IdMitra { get; set; }
-        public string Status { get; set; }
+        public StatusMitra Status { get; set; }
 
         public string IdPengguna { get; set; }
         public Pengguna Pengguna { get; set; }
+    }
+
+    public enum StatusMitra
+    {      
+        Aktif,
+        NonAktif
     }
 }
