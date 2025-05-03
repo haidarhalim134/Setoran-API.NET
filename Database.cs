@@ -41,6 +41,11 @@ public class Database : IdentityDbContext
             .WithOne(e => e.Pelanggan)
             .HasForeignKey<Pelanggan>(p => p.IdPengguna);
             
+        modelBuilder.Entity<Mitra>()
+            .HasOne(e => e.Pengguna)
+            .WithOne(e => e.Mitra)
+            .HasForeignKey<Mitra>(p => p.IdPengguna);
+
         modelBuilder.Entity<Notifikasi>()
             .HasOne(e => e.Pengguna)
             .WithMany(e => e.Notifikasis)
