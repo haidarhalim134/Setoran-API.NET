@@ -7,10 +7,9 @@ namespace Setoran_API.NET.Models
     {
         [Key]
         public int IdMitra { get; set; }
-        // public int IdPengguna { get; set; }
         public string Status { get; set; }
 
-        [ForeignKey("Id")]
+        public string IdPengguna { get; set; }
         public Pengguna Pengguna { get; set; }
     }
 }
