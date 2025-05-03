@@ -11,7 +11,7 @@ public class PostNotifikasDTO
 
     [DefaultValue(TargetNavigasi.None)]
     public TargetNavigasi Navigasi { get; set; } = TargetNavigasi.None;
-    public string? DataNavigasi { get; set; }
+    public Dictionary<string, string>? DataNavigasi { get; set; }
 
     [DefaultValue(false)]
     public bool IsRead { get; set; } = false;
