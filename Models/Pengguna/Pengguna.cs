@@ -14,6 +14,6 @@ public class Pengguna: IdentityUser
     public int? Umur { get; set; }
     public string NomorKTP { get; set; }
     public string Alamat { get; set; }
-    public int? IdGambar { get; set; }
+    public string? IdGambar { get; set; }
 }
 
