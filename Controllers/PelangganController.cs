@@ -24,14 +24,14 @@ public class PelangganController : GenericControllerEXtension<Pelanggan>
     }
 
     [Authorize]
-    [HttpPost]
+    [HttpPut]
     public async Task<IActionResult> UpdatePelanggan([FromBody] PostPelangganDTO pelangganDto)
     {
         var pelangganFound = await _db.Pelanggan.FindAsync(pelangganDto.IdPelanggan);
         if (pelangganFound is null)
             return NotFound(new { message = "Pelanggan tidak ditemukan"});
         
-        _db.Entry(pelangganFound).CurrentValues.SetValues(pelangganDto.ToPelanggan());
+        _db.UpdateEntry(pelangganFound, pelangganDto.ToPelanggan());
         await _db.SaveChangesAsync();
 
         return Ok();
