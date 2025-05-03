@@ -154,4 +154,31 @@ public class Database : IdentityDbContext
         });
 
     }
+
+    /// <summary>
+    /// update sebuah entry database, kalau prop null -> ignore
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="oldObject"></param>
+    /// <param name="newObject"></param>
+    public void UpdateEntry<T>(T oldObject, object newObject, bool ignoreNull=true)
+    {
+        if (ignoreNull)
+        {
+            var entry = Entry(oldObject);
+
+            foreach (var property in entry.Properties)
+            {
+                var newValue = entry.Context.Entry(newObject).Property(property.Metadata.Name).CurrentValue;
+                
+                if (newValue != null)
+                {
+                    property.CurrentValue = newValue;
+                }
+            }
+        } else
+        {
+            Entry(oldObject).CurrentValues.SetValues(newObject);
+        }
+    }
 }
