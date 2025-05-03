@@ -11,7 +11,7 @@ namespace Setoran_API.NET.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class MitraController : GenericControllerEXtension<Notifikasi>
+public class MitraController : GenericControllerEXtension<Mitra>
 {    
     private readonly Database _db;
     public MitraController(Database db)
