@@ -11,8 +11,19 @@ public class PenggunaController : ControllerBase
 {
     [Authorize]
     [HttpGet("currentPengguna")]
-    public Pengguna? CurrentPengguna(Database db)
+    public async Task<Pengguna?> CurrentPengguna(Database db)
     {
-        return HttpContext.GetCurrentPengguna(db);
+        
+        var pengguna = HttpContext.GetCurrentPengguna(db);
+        
+        // include data pelanggan dan mitra
+        await db.Entry(pengguna)
+            .Reference(itm => itm.Pelanggan)
+            .LoadAsync();
+        await db.Entry(pengguna)
+            .Reference(itm => itm.Mitra)
+            .LoadAsync();
+
+        return pengguna;
     }
 }
