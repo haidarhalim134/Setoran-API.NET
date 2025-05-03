@@ -34,7 +34,7 @@ public class PenggunaController : GenericControllerEXtension<Pengguna>
         return pengguna;
     }
 
-    [Authorize]
+    // [Authorize]
     [HttpGet("getAll")]
     public async Task<IEnumerable<Pengguna>> GetAll([FromQuery] bool withMitra=false, [FromQuery] bool withPelanggan=false)
     {
@@ -54,5 +54,19 @@ public class PenggunaController : GenericControllerEXtension<Pengguna>
             
             return itm;
         }).Select(itm => itm.Result);
+    }
+
+    // [Authorize]
+    [HttpPut]
+    public async Task<IActionResult> UpdatePengguna([FromBody] PostPenggunaDTO penggunaDto)
+    {
+        var penggunaFound = await _db.Pengguna.FindAsync(penggunaDto.Id);
+        if (penggunaFound is null)
+            return NotFound(new { message = "Pengguna tidak ditemukan"});
+        
+        _db.UpdateEntry(penggunaFound, penggunaDto.ToPengguna());
+        await _db.SaveChangesAsync();
+
+        return Ok();
     }
 }
