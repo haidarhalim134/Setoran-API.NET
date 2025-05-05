@@ -14,6 +14,6 @@ public record RegisterForm
     public string email { get; set; } 
 
     [Required]
-    [MinLength(8)]
+    [MinLength(255)]
     public string password { get; set; } 
 }
