@@ -46,7 +46,7 @@ namespace Setoran_API.NET.Controllers
         {
             var pembayaran = await _context.Pembayaran
                 .FirstOrDefaultAsync(p => p.IdTransaksi == id);
-            
+
             if (pembayaran == null)
             {
                 return NotFound(new { message = "Pembayaran tidak ditemukan" });
@@ -68,7 +68,7 @@ namespace Setoran_API.NET.Controllers
                 IdTransaksi = pembayaran.IdTransaksi,
                 MetodePembayaran = pembayaran.MetodePembayaran,
                 StatusPembayaran = "Belum Lunas",
-                TanggalPembayaran = null
+                TanggalPembayaran = DateTime.Now,
             };
 
             _context.Pembayaran.Add(newPembayaran);
