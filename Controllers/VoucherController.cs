@@ -63,7 +63,7 @@ public class VoucherController : GenericControllerEXtension<Voucher>
     }
 
     [HttpGet("filtered")]
-    public List<Voucher> GetFiltered(Database db, [FromQuery] string? search, [FromQuery] StatusVoucher? status, [FromQuery] DateTime? start, [FromQuery] DateTime? end)
+    public List<Voucher> GetFiltered(Database db, [FromQuery] string? search=null, [FromQuery] StatusVoucher? status=null, [FromQuery] DateTime? start=null, [FromQuery] DateTime? end=null)
     {
         var query = db.Voucher.AsQueryable();
 
