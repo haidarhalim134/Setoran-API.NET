@@ -18,6 +18,8 @@ namespace Setoran_API.NET.Models
         public int Tahun { get; set; }
         public string Transmisi { get; set; }
         public string StatusMotor { get; set; }
+        
+        [Column(TypeName = "decimal(18,2)")]
         public decimal HargaHarian { get; set; }
         public int? DiskonPercentage { get; set; }
         public int? DiskonAmount { get; set; }
