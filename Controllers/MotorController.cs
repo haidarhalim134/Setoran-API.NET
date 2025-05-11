@@ -37,7 +37,16 @@ namespace Setoran_API.NET.Controllers
                 motors = motors.Where(m => m.Transmisi == query.Transmisi);
             }
 
-            var result = await motors.ToListAsync();
+            List<Motor> result;
+            if (motors != null)
+            {
+                result = await motors.ToListAsync();
+            }
+            else
+            {
+                result = new List<Motor>();
+            }
+
 
             return Ok(result);
         }
