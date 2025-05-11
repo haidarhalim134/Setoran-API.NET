@@ -40,7 +40,7 @@ public class Database : IdentityDbContext
             .HasOne(e => e.Pengguna)
             .WithOne(e => e.Pelanggan)
             .HasForeignKey<Pelanggan>(p => p.IdPengguna);
-            
+
         modelBuilder.Entity<Mitra>()
             .HasOne(e => e.Pengguna)
             .WithOne(e => e.Mitra)
@@ -61,7 +61,7 @@ public class Database : IdentityDbContext
             .WithMany(e => e.UsedVouchers)
             .UsingEntity<VoucherUsed>();
 
-        modelBuilder.Entity<Voucher>()   
+        modelBuilder.Entity<Voucher>()
             .HasIndex(u => u.KodeVoucher)
             .IsUnique();
 
@@ -69,8 +69,8 @@ public class Database : IdentityDbContext
             .Property(b => b.DataNavigasi)
             .HasConversion(
                 v => v == null ? null : JsonConvert.SerializeObject(v),
-                v => string.IsNullOrEmpty(v) 
-                    ? null 
+                v => string.IsNullOrEmpty(v)
+                    ? null
                     : JsonConvert.DeserializeObject<Dictionary<string, string>>(v));
     }
 
@@ -111,43 +111,10 @@ public class Database : IdentityDbContext
                 return;
 
             // agak sumpek kalau seeding semua disini, mungkin refactor seeder setiap entity ke tempat terpisah (e.g. method-method) nanti
-            static string hashPassword(Pengguna user, string password)
-            {
-                var passwordHasher = new PasswordHasher<Pengguna>();
-                return passwordHasher.HashPassword(user, password);
-            }
-
-            var pengguna = new Pengguna
-            {
-                Nama = "admin01",
-                UserName = "admin01@mail.com",
-                Email = "admin01@mail.com",
-                NormalizedUserName = "ADMIN01@MAIL.COM",
-                NormalizedEmail = "ADMIN01@MAIL.COM",
-                EmailConfirmed = true,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                ConcurrencyStamp = Guid.NewGuid().ToString(),
-                LockoutEnabled = true
-            };
-
-            pengguna.PasswordHash = hashPassword(pengguna, "admin1234");
-
-            context.Set<Pengguna>().Add(pengguna);
-
-            var pelanggan = new Pelanggan
-            {
-                IdPengguna = pengguna.Id
-            };
-            
-            context.Set<Pelanggan>().Add(pelanggan);
-
-            var notifikasi = Setoran_API.NET.Models.Notifikasi.CreateNotification(pengguna.Id, "Selamat datang di aplikasi Setoran", "Silahkan selesaikan proses registrasi dengan melengkapi data-data anda di halaman edit profile")
-                .ToEditProfile();
-                // .Send(db);
-            
-            context.Set<Notifikasi>().Add(notifikasi);
 
             // repot nih
+            Setoran_API.NET.Models.Pengguna.Seed(context);
+            Setoran_API.NET.Models.Motor.Seed(context);
             Setoran_API.NET.Models.Voucher.Seed(context);
 
             context.SaveChanges();
@@ -161,7 +128,7 @@ public class Database : IdentityDbContext
     /// <typeparam name="T"></typeparam>
     /// <param name="oldObject"></param>
     /// <param name="newObject"></param>
-    public void UpdateEntry<T>(T oldObject, object newObject, bool ignoreNull=true)
+    public void UpdateEntry<T>(T oldObject, object newObject, bool ignoreNull = true)
     {
         if (ignoreNull)
         {
@@ -170,13 +137,14 @@ public class Database : IdentityDbContext
             foreach (var property in entry.Properties)
             {
                 var newValue = entry.Context.Entry(newObject).Property(property.Metadata.Name).CurrentValue;
-                
+
                 if (newValue != null)
                 {
                     property.CurrentValue = newValue;
                 }
             }
-        } else
+        }
+        else
         {
             Entry(oldObject).CurrentValues.SetValues(newObject);
         }

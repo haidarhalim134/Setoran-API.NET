@@ -32,7 +32,7 @@ public class MotorControllerTest : TestBase
         // Given
         MotorQuery query = new MotorQuery
         {
-            IdMitra = "1"
+            IdMitra = 1
         };
 
         // When
@@ -50,7 +50,7 @@ public class MotorControllerTest : TestBase
         // Given
         MotorQuery query = new MotorQuery
         {
-            IdMitra = "1",
+            IdMitra = 1,
             Status = "Tersedia"
 
         };
@@ -75,7 +75,7 @@ public class MotorControllerTest : TestBase
         // Given
         MotorQuery query = new MotorQuery
         {
-            IdMitra = "1",
+            IdMitra = 1,
             Model = "Beat",
             Status = "Tersedia",
             Transmisi = "Matic"
@@ -120,7 +120,7 @@ public class MotorControllerTest : TestBase
         // Given
         MotorQuery query = new MotorQuery
         {
-            IdMitra = "123zbc"
+            IdMitra = -123
         };
 
         // When
@@ -138,7 +138,7 @@ public class MotorControllerTest : TestBase
         // Given
         MotorQuery query = new MotorQuery
         {
-            IdMitra = "",
+            IdMitra = 0,
             Model = "Beat",
             Status = "",
             Transmisi = "Matic"

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Setoran_API.NET.Models
 {
@@ -23,5 +24,72 @@ namespace Setoran_API.NET.Models
 
         [ForeignKey("IdMitra")]
         public Mitra Mitra { get; set; }
+
+        public static void Seed(DbContext dbContext)
+        {
+            var mitra = dbContext.Set<Mitra>().ToList()[0];
+
+            dbContext.Set<Motor>().Add(new Motor
+            {
+                PlatNomor = "D1234QWE",
+                IdMitra = mitra.IdMitra,
+                NomorSTNK = "",
+                NomorBPKB = "",
+                Model = "Beat",
+                Brand = "",
+                Tipe = "",
+                Tahun = 2022,
+                Transmisi = "Matic",
+                StatusMotor = "Tersedia",
+                HargaHarian = 70000,
+            });
+
+            dbContext.Set<Motor>().Add(new Motor
+            {
+                PlatNomor = "D2345ASD",
+                IdMitra = mitra.IdMitra,
+                NomorSTNK = "",
+                NomorBPKB = "",
+                Model = "Ninja",
+                Brand = "",
+                Tipe = "",
+                Tahun = 2021,
+                Transmisi = "Manual",
+                StatusMotor = "Tersedia",
+                HargaHarian = 120000,
+            });
+
+            dbContext.Set<Motor>().Add(new Motor
+            {
+                PlatNomor = "D3210RTY",
+                IdMitra = mitra.IdMitra,
+                NomorSTNK = "",
+                NomorBPKB = "",
+                Model = "Scoopy",
+                Brand = "",
+                Tipe = "",
+                Tahun = 2022,
+                Transmisi = "Matic",
+                StatusMotor = "Tersedia",
+                HargaHarian = 70000,
+            });
+
+            dbContext.Set<Motor>().Add(new Motor
+            {
+                PlatNomor = "D5678BNM",
+                IdMitra = mitra.IdMitra,
+                NomorSTNK = "",
+                NomorBPKB = "",
+                Model = "Beat",
+                Brand = "",
+                Tipe = "",
+                Tahun = 2022,
+                Transmisi = "Matic",
+                StatusMotor = "Tersedia",
+                HargaHarian = 70000,
+            });
+
+            dbContext.SaveChanges();
+        }
     }
 }
