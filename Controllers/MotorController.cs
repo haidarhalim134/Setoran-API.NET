@@ -17,7 +17,7 @@ namespace Setoran_API.NET.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetMotors([FromQuery] MotorQuery query)
+        public async Task<ActionResult<List<Motor>>> GetMotors([FromQuery] MotorQuery query)
         {
             var motors = _context.Motor.AsQueryable();
             if (!string.IsNullOrEmpty(query.IdMitra))
