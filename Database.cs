@@ -56,6 +56,10 @@ public class Database : IdentityDbContext
             .WithMany(e => e.DeviceTokens)
             .HasForeignKey(p => p.IdPengguna);
 
+        modelBuilder.Entity<Diskon>()
+            .HasOne(e => e.Motor)
+            .WithMany(e => e.Diskon);
+
         modelBuilder.Entity<Voucher>()
             .HasMany(e => e.Pelanggans)
             .WithMany(e => e.UsedVouchers)

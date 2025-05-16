@@ -21,8 +21,7 @@ namespace Setoran_API.NET.Models
         
         [Column(TypeName = "decimal(18,2)")]
         public decimal HargaHarian { get; set; }
-        public int? DiskonPercentage { get; set; }
-        public int? DiskonAmount { get; set; }
+        public List<Diskon> Diskon { get; set; }
 
         [ForeignKey("IdMitra")]
         public Mitra Mitra { get; set; }
