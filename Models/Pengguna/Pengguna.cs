@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,6 +8,9 @@ public class Pengguna : IdentityUser
 {
     public Pelanggan? Pelanggan { get; set; }
     public Mitra? Mitra { get; set; }
+
+    [DefaultValue(false)]
+    public bool IsAdmin { get; set; } = false;
     public List<Notifikasi> Notifikasis { get; set; }
     public List<DeviceToken> DeviceTokens { get; set; }
     public string Nama { get; set; }
@@ -30,6 +34,7 @@ public class Pengguna : IdentityUser
             Nama = "admin01",
             UserName = "admin01@mail.com",
             Email = "admin01@mail.com",
+            IsAdmin=true,
             NormalizedUserName = "ADMIN01@MAIL.COM",
             NormalizedEmail = "ADMIN01@MAIL.COM",
             EmailConfirmed = true,
