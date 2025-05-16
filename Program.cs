@@ -112,14 +112,18 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapControllers();
-app.MapIdentityApi<Pengguna>();
+app.UseRouting();
 
-app.UseCors(policy => policy.AllowAnyMethod().AllowAnyHeader().AllowCredentials().WithOrigins(["http://localhost:3000", "https://setoran.vercel.app/"]));//.SetIsOriginAllowed(hostName => {Console.WriteLine(hostName);return true;}));
+app.UseCors(policy => policy
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .AllowCredentials()
+    .WithOrigins("http://localhost:3000", "https://setoran.vercel.app"));
 
 app.UseAuthentication();
-app.UseRouting();
 app.UseAuthorization();
 
+app.MapControllers();
+app.MapIdentityApi<Pengguna>();
 
 app.Run();
