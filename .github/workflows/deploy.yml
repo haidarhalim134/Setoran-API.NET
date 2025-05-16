@@ -34,4 +34,4 @@ jobs:
     - name: Verify deployment is live
       run: |
         sleep 60  # optional delay to allow restart
-        curl -sSf http://${{ secrets.VPS_HOST }}:5104/health > /dev/null
+        curl -sSf https://${{ secrets.VPS_HOST }}:5104/health > /dev/null
