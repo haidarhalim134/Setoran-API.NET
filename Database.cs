@@ -137,15 +137,22 @@ public class Database : IdentityDbContext
     {
         if (ignoreNull)
         {
-            var entry = Entry(oldObject);
+            var oldEntry = Entry(oldObject);
+            var newType = newObject.GetType();
 
-            foreach (var property in entry.Properties)
+            foreach (var property in oldEntry.Properties)
             {
-                var newValue = entry.Context.Entry(newObject).Property(property.Metadata.Name).CurrentValue;
+                var propertyName = property.Metadata.Name;
+                var newProp = newType.GetProperty(propertyName);
 
-                if (newValue != null)
+                if (newProp != null)
                 {
-                    property.CurrentValue = newValue;
+                    dynamic? newValue = newProp.GetValue(newObject);
+
+                    if (newValue != null)
+                    {
+                        property.CurrentValue = newValue;
+                    }
                 }
             }
         }

@@ -33,7 +33,7 @@ public class DiskonController : GenericControllerEXtension<Diskon>
         if (diskonFound is null)
             return NotFound(new {message = "Diskon tidak ditemukan"});
 
-        _db.UpdateEntry(diskonFound, diskon.ToDiskon());
+        _db.UpdateEntry(diskonFound, diskon);
         _db.SaveChanges();
 
         return Ok();
