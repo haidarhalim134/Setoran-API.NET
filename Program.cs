@@ -118,6 +118,7 @@ app.UseCors(policy => policy
     .AllowAnyMethod()
     .AllowAnyHeader()
     .AllowCredentials()
+    .SetPreflightMaxAge(TimeSpan.FromHours(24))
     .WithOrigins("http://localhost:3000", "https://setoran.vercel.app"));
 
 app.UseAuthentication();
@@ -126,4 +127,4 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapIdentityApi<Pengguna>();
 
-app.Run();
+app.Run(url: "https://localhost:5104");

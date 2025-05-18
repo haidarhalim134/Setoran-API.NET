@@ -17,10 +17,10 @@ public class AuthController : ControllerBase
         _userManager = userManager;
     }
 
-    public AuthController(UserManager<Pengguna> userManager)
-    {
-        _userManager = userManager;
-    }
+    // public AuthController(UserManager<Pengguna> userManager)
+    // {
+    //     _userManager = userManager;
+    // }
 
     [HttpPost("register")]
     public async Task<IActionResult> Register(Database db, [FromBody] RegisterForm request)
