@@ -266,9 +266,6 @@ namespace Setoran_API.NET.Migrations
                     b.Property<decimal>("JumlahDiskon")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("MotorIdMotor")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Nama")
                         .IsRequired()
                         .HasColumnType("text");
@@ -284,7 +281,7 @@ namespace Setoran_API.NET.Migrations
 
                     b.HasKey("IdDiskon");
 
-                    b.HasIndex("MotorIdMotor");
+                    b.HasIndex("IdMotor");
 
                     b.ToTable("Diskon");
                 });
@@ -675,7 +672,7 @@ namespace Setoran_API.NET.Migrations
                 {
                     b.HasOne("Setoran_API.NET.Models.Motor", "Motor")
                         .WithMany("Diskon")
-                        .HasForeignKey("MotorIdMotor")
+                        .HasForeignKey("IdMotor")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
