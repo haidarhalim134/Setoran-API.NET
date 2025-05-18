@@ -58,7 +58,8 @@ public class Database : IdentityDbContext
 
         modelBuilder.Entity<Diskon>()
             .HasOne(e => e.Motor)
-            .WithMany(e => e.Diskon);
+            .WithMany(e => e.Diskon)
+            .HasForeignKey(p => p.IdMotor);
 
         modelBuilder.Entity<Voucher>()
             .HasMany(e => e.Pelanggans)
