@@ -33,5 +33,8 @@ jobs:
           screen -dmS setoran bash -c 'dotnet run --urls "https://0.0.0.0:5104"'
     - name: Verify deployment is live
       run: |
-        sleep 120  # optional delay to allow restart
-        curl -sSf https://${{ secrets.VPS_HOST }}:5104/health > /dev/null
+        sleep 60
+        if ! curl -sSfk https://${{ secrets.VPS_HOST }}:5104/health > /dev/null; then
+          sleep 30
+          curl -sSfk https://${{ secrets.VPS_HOST }}:5104/health > /dev/null
+        fi
