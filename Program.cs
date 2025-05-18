@@ -127,4 +127,4 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapIdentityApi<Pengguna>();
 
-app.Run(url: "https://localhost:5104");
+app.Run();
