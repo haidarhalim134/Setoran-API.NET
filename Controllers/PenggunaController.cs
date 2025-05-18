@@ -64,7 +64,7 @@ public class PenggunaController : GenericControllerEXtension<Pengguna>
         if (penggunaFound is null)
             return NotFound(new { message = "Pengguna tidak ditemukan"});
         
-        _db.UpdateEntry(penggunaFound, penggunaDto.ToPengguna());
+        _db.UpdateEntry(penggunaFound, penggunaDto);
         await _db.SaveChangesAsync();
 
         return Ok();

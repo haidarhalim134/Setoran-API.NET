@@ -31,7 +31,7 @@ public class PelangganController : GenericControllerEXtension<Pelanggan>
         if (pelangganFound is null)
             return NotFound(new { message = "Pelanggan tidak ditemukan"});
         
-        _db.UpdateEntry(pelangganFound, pelangganDto.ToPelanggan());
+        _db.UpdateEntry(pelangganFound, pelangganDto);
         await _db.SaveChangesAsync();
 
         return Ok();
