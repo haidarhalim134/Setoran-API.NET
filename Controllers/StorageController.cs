@@ -25,7 +25,7 @@ public class StorageController : ControllerBase
             return BadRequest(new {message = "No file uploaded."});
 
         try {
-            var fileName = _supabaseService.StoreFile("image", file);
+            var fileName = await _supabaseService.StoreFile("image", file);
             return Ok(new { url = fileName });
         } catch {
             return StatusCode(500, "Failed to upload image");
