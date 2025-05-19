@@ -80,13 +80,12 @@ public class VoucherController : GenericControllerEXtension<Voucher>
             {
                 var column = properties[i].Name;
                 if (i > 0) whereClauses.Append(" OR ");
-                whereClauses.Append($"[{column}] LIKE @p{i}");
+                whereClauses.Append($"\"{column}\" LIKE @p{i}");
                 parameters.Add($"%{search}%");
             }
 
-            var interpolatedSql = FormattableStringFactory.Create($"select * from Voucher WHERE {whereClauses}", parameters.ToArray());
+            var interpolatedSql = FormattableStringFactory.Create($"select * from \"Voucher\" WHERE {whereClauses}", parameters.ToArray());
 
-            // TODO: 
             query = db.Voucher.FromSqlInterpolated(interpolatedSql);
         }
 
