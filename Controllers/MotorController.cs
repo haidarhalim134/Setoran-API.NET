@@ -20,9 +20,9 @@ namespace Setoran_API.NET.Controllers
         public async Task<ActionResult<List<Motor>>> GetMotors([FromQuery] MotorQuery query)
         {
             var motors = _context.Motor.AsQueryable();
-            if (query.IdMitra != null)
+            if (!string.IsNullOrEmpty(query.IdMitra))
             {
-                motors = motors.Where(m => m.IdMitra == query.IdMitra);
+                motors = motors.Where(m => m.IdMitra == int.Parse(query.IdMitra));
             }
             if (!string.IsNullOrEmpty(query.Status))
             {

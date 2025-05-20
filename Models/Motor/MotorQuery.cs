@@ -1,8 +1,8 @@
 public class MotorQuery
 {
-    public int? IdMitra;
-    public string? Status;
-    public string? Model;
-    public string? Transmisi;
+    public String? IdMitra { get; set; }
+    public string? Status { get; set; }
+    public string? Model { get; set; }
+    public string? Transmisi { get; set; }
 
 }

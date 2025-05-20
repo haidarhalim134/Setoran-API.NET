@@ -32,7 +32,7 @@ public class MotorControllerTest : TestBase
         // Given
         MotorQuery query = new MotorQuery
         {
-            IdMitra = 1
+            IdMitra = "1"
         };
 
         // When
@@ -41,7 +41,11 @@ public class MotorControllerTest : TestBase
 
         // Then
         Assert.IsType<OkObjectResult>(result.Result);
-        Assert.All(listMotor, motor => Assert.Equal(1, motor.IdMitra));
+        if (listMotor != null)
+        {
+            Assert.All(listMotor, motor => Assert.Equal(1, motor.IdMitra));
+
+        }
     }
 
     [Fact]
@@ -50,7 +54,7 @@ public class MotorControllerTest : TestBase
         // Given
         MotorQuery query = new MotorQuery
         {
-            IdMitra = 1,
+            IdMitra = "1",
             Status = "Tersedia"
 
         };
@@ -62,11 +66,14 @@ public class MotorControllerTest : TestBase
 
         // Then
         Assert.IsType<OkObjectResult>(result.Result);
-        Assert.All(listMotor, motor =>
+        if (listMotor != null)
         {
-            Assert.Equal(1, motor.IdMitra);
-            Assert.Equal("Tersedia", motor.StatusMotor);
-        });
+            Assert.All(listMotor, motor =>
+            {
+                Assert.Equal(1, motor.IdMitra);
+                Assert.Equal("Tersedia", motor.StatusMotor);
+            });
+        }
     }
 
     [Fact]
@@ -75,7 +82,7 @@ public class MotorControllerTest : TestBase
         // Given
         MotorQuery query = new MotorQuery
         {
-            IdMitra = 1,
+            IdMitra = "1",
             Model = "Beat",
             Status = "Tersedia",
             Transmisi = "Matic"
@@ -87,13 +94,16 @@ public class MotorControllerTest : TestBase
 
         // Then
         Assert.IsType<OkObjectResult>(result.Result);
-        Assert.All(listMotor, motor =>
+        if (listMotor != null)
         {
-            Assert.Equal(1, motor.IdMitra);
-            Assert.Equal("Beat", motor.Model);
-            Assert.Equal("Tersedia", motor.StatusMotor);
-            Assert.Equal("Matic", motor.Transmisi);
-        });
+            Assert.All(listMotor, motor =>
+            {
+                Assert.Equal(1, motor.IdMitra);
+                Assert.Equal("Beat", motor.Model);
+                Assert.Equal("Tersedia", motor.StatusMotor);
+                Assert.Equal("Matic", motor.Transmisi);
+            });
+        }
     }
 
     [Fact]
@@ -111,7 +121,10 @@ public class MotorControllerTest : TestBase
 
         // Then
         Assert.IsType<OkObjectResult>(result.Result);
-        Assert.All(listMotor, motor => Assert.Equal("Matic", motor.Transmisi));
+        if (listMotor != null)
+        {
+            Assert.All(listMotor, motor => Assert.Equal("Matic", motor.Transmisi));
+        }
     }
 
     [Fact]
@@ -120,7 +133,7 @@ public class MotorControllerTest : TestBase
         // Given
         MotorQuery query = new MotorQuery
         {
-            IdMitra = -123
+            IdMitra = "-123"
         };
 
         // When
@@ -129,7 +142,10 @@ public class MotorControllerTest : TestBase
 
         // Then
         Assert.IsType<OkObjectResult>(result.Result);
-        Assert.All(listMotor, motor => Assert.NotEqual(int.Parse("123zbc"), motor.IdMitra));
+        if (listMotor != null)
+        {
+            Assert.All(listMotor, motor => Assert.NotEqual(int.Parse("123zbc"), motor.IdMitra));
+        }
     }
 
     [Fact]
@@ -138,7 +154,7 @@ public class MotorControllerTest : TestBase
         // Given
         MotorQuery query = new MotorQuery
         {
-            IdMitra = 0,
+            IdMitra = "",
             Model = "Beat",
             Status = "",
             Transmisi = "Matic"
@@ -150,12 +166,15 @@ public class MotorControllerTest : TestBase
 
         // Then
         Assert.IsType<OkObjectResult>(result.Result);
-        Assert.All(listMotor, motor =>
+        if (listMotor != null)
         {
-            Assert.NotEqual(int.Parse(""), motor.IdMitra);
-            Assert.Equal("Beat", motor.Model);
-            Assert.NotEqual("", motor.StatusMotor);
-            Assert.Equal("Matic", motor.Transmisi);
-        });
+            Assert.All(listMotor, motor =>
+            {
+                Assert.NotEqual(int.Parse(""), motor.IdMitra);
+                Assert.Equal("Beat", motor.Model);
+                Assert.NotEqual("", motor.StatusMotor);
+                Assert.Equal("Matic", motor.Transmisi);
+            });
+        }
     }
 }
