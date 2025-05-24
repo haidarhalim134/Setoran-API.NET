@@ -8,7 +8,7 @@ namespace Setoran_API.NET.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class PenggunaController : GenericControllerEXtension<Pengguna>
+public class PenggunaController : GenericControllerExtension<Pengguna, string>
 {    
     private readonly Database _db;
     public PenggunaController(Database db)

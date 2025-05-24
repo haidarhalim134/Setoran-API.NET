@@ -6,7 +6,7 @@ namespace Setoran_API.NET.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class DiskonController : GenericControllerEXtension<Diskon>
+public class DiskonController : GenericControllerExtension<Diskon>
 {
 
     private readonly Database _db;

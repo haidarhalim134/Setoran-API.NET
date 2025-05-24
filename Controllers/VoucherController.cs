@@ -10,7 +10,7 @@ namespace Setoran_API.NET.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class VoucherController : GenericControllerEXtension<Voucher>
+public class VoucherController : GenericControllerExtension<Voucher>
 {    
 
     // user endpoint

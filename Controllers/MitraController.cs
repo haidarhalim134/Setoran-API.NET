@@ -11,7 +11,7 @@ namespace Setoran_API.NET.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class MitraController : GenericControllerEXtension<Mitra>
+public class MitraController : GenericControllerExtension<Mitra>
 {    
     private readonly Database _db;
     public MitraController(Database db)

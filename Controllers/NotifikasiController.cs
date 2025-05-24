@@ -11,7 +11,7 @@ namespace Setoran_API.NET.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class NotifikasiController : GenericControllerEXtension<Notifikasi>
+public class NotifikasiController : GenericControllerExtension<Notifikasi>
 {    
     private readonly Database _db;
     public NotifikasiController(Database db)
