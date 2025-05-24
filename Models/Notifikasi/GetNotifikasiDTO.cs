@@ -12,6 +12,7 @@ public class GetNotifikasDTO
     public TargetNavigasi Navigasi { get; set; }
     public Dictionary<string, string>? DataNavigasi { get; set; }
     public bool IsRead { get; set; } = false;
+    public DateTime WaktuNotifikasi { get; set; }
 
     public static GetNotifikasDTO FromNotif(Notifikasi notifikasi)
     {
