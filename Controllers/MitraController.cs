@@ -28,11 +28,13 @@ public class MitraController : GenericControllerEXtension<Mitra>
             .ToListAsync();
 
         // Map to anonymous objects or a DTO with motor count
-        var mitrasWithMotorCount = mitras.Select(async m => new MitraMotorDTO
+        var mitrasWithMotorCountTasks = mitras.Select(async m => new MitraMotorDTO
         {
-            Mitra=m,
+            Mitra = m,
             JumlahMotor = await _db.Motor.CountAsync(motor => motor.IdMitra == m.IdMitra)
         });
+
+        var mitrasWithMotorCount = await Task.WhenAll(mitrasWithMotorCountTasks);
 
         return Ok(mitrasWithMotorCount);
     }
