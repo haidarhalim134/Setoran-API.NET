@@ -10,7 +10,7 @@ public class GetNotifikasDTO
     public string? Judul { get; set; }
     public string? Deskripsi { get; set; }
     public TargetNavigasi Navigasi { get; set; }
-    public string? DataNavigasi { get; set; }
+    public Dictionary<string, string>? DataNavigasi { get; set; }
     public bool IsRead { get; set; } = false;
 
     public static GetNotifikasDTO FromNotif(Notifikasi notifikasi)
