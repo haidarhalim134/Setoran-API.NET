@@ -21,12 +21,15 @@ public class Notifikasi
     public bool IsRead { get; set; } = false;
     public Pengguna? Pengguna { get; set; }
 
+    public DateTime WaktuNotifikasi { get; set; } = DateTime.Now;
+
     public static Notifikasi CreateNotification(string idPengguna, string judul, string deskripsi)
     {
-        return new Notifikasi {
-            IdPengguna=idPengguna,
-            Judul=judul,
-            Deskripsi=deskripsi
+        return new Notifikasi
+        {
+            IdPengguna = idPengguna,
+            Judul = judul,
+            Deskripsi = deskripsi
         };
     }
 
@@ -54,8 +57,9 @@ public class Notifikasi
     public void Send(DbContext db, bool sendFcm=true)
     {
         db.Set<Notifikasi>().Add(this);
+        WaktuNotifikasi = DateTime.Now;
 
-        if (sendFcm) 
+        if (sendFcm)
         {
             // var devices = db.Set<DeviceToken>().Where(itm => itm.Pengguna == Pengguna).ToList();
             // foreach (var device in devices)
