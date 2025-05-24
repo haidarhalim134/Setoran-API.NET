@@ -56,6 +56,16 @@ public class PenggunaController : GenericControllerEXtension<Pengguna>
         }).Select(itm => itm.Result);
     }
 
+    [HttpGet("fromMitra")]
+    public async Task<ActionResult<Pengguna>> FromMitra([FromQuery] int idMitra)
+    {
+        var pengguna = await _db.Pengguna.Where(itm => itm.Mitra.IdMitra == idMitra).FirstOrDefaultAsync();
+        if (pengguna is null)
+            return NotFound();
+
+        return pengguna;
+    }
+
     // [Authorize]
     [HttpPut]
     public async Task<IActionResult> UpdatePengguna([FromBody] PostPenggunaDTO penggunaDto)
