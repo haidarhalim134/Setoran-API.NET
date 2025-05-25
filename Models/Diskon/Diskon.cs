@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Bogus;
+using Microsoft.EntityFrameworkCore;
 
 namespace Setoran_API.NET.Models
 {
@@ -17,6 +19,32 @@ namespace Setoran_API.NET.Models
         public StatusDiskon StatusDiskon { get; set; }
         public DateTime TanggalMulai { get; set; }
         public DateTime TanggalAkhir { get; set; }
+
+        public static void Seed(DbContext dbContext)
+        {
+            var faker = new Faker("id_ID");
+            foreach (var motor in dbContext.Set<Motor>())
+            {
+                if (!faker.Random.Bool())
+                    continue;
+                    
+                var tanggalMulai = faker.Date.PastOffset(1).UtcDateTime.Date;
+                var daysToAdd = faker.Random.Int(1, 10);
+                var tanggalAkhir = tanggalMulai.AddDays(daysToAdd);
+
+                var diskon = new Diskon
+                {
+                    Nama = string.Join(" ", faker.Lorem.Words(2)),
+                    StatusDiskon = faker.PickRandom(new[] { StatusDiskon.Aktif, StatusDiskon.NonAktif }),
+                    TanggalMulai = tanggalMulai,
+                    TanggalAkhir = tanggalAkhir,
+                    JumlahDiskon = faker.Random.Decimal(1000, motor.HargaHarian - 1000),
+                };
+
+                dbContext.Set<Diskon>().Add(diskon);
+                dbContext.SaveChanges();
+            }
+        }
     }
 
     public enum StatusDiskon
