@@ -54,7 +54,7 @@ namespace Setoran_API.NET.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetMotorById(int id)
+        public async Task<ActionResult<Motor>> GetMotorById(int id)
         {
             var motor = await _context.Motor.FindAsync(id);
             if (motor == null)
@@ -66,7 +66,7 @@ namespace Setoran_API.NET.Controllers
         }
 
         [HttpGet("{id}/ulasans")]
-        public async Task<IActionResult> GetUlasanByMotorId(int id)
+        public async Task<ActionResult<List<Ulasan>>> GetUlasanByMotorId(int id)
         {
             var motor = await _context.Motor.FindAsync(id);
 

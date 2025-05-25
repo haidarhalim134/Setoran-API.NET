@@ -18,7 +18,7 @@ namespace Setoran_API.NET.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetTransaksi([FromQuery] TransaksiQuery query)
+        public async Task<ActionResult<List<Transaksi>>> GetTransaksi([FromQuery] TransaksiQuery query)
         {
             var transaksis = _context.Transaksi.AsQueryable(); ;
 
@@ -48,7 +48,7 @@ namespace Setoran_API.NET.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetTransaksiById(int id)
+        public async Task<ActionResult<Transaksi>> GetTransaksiById(int id)
         {
             var transaksi = await _context.Transaksi.FindAsync(id);
             if (transaksi == null)
