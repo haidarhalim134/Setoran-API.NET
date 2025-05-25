@@ -42,11 +42,12 @@ public class VoucherController : GenericControllerExtension<Voucher>
         var existing = db.Voucher.Where(v => v.KodeVoucher == voucher.KodeVoucher).FirstOrDefault();
         if (existing is not null)
             return BadRequest(new {message = "Kode voucher sudah digunakan"});
-
-        db.Add(voucher.ToVoucher());
+            
+        var newVoucher = voucher.ToVoucher();
+        db.Add(newVoucher);
         db.SaveChanges();
 
-        return Ok();
+        return Ok(newVoucher);
     }
 
     [HttpPut()]
