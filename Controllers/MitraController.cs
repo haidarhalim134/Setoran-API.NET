@@ -12,7 +12,7 @@ namespace Setoran_API.NET.Controllers;
 [ApiController]
 [Route("[controller]")]
 public class MitraController : GenericControllerExtension<Mitra>
-{    
+{
     private readonly Database _db;
     public MitraController(Database db)
     {
@@ -37,6 +37,20 @@ public class MitraController : GenericControllerExtension<Mitra>
         var mitrasWithMotorCount = await Task.WhenAll(mitrasWithMotorCountTasks);
 
         return Ok(mitrasWithMotorCount);
+    }
+    
+    [Authorize]
+    [HttpPut]
+    public async Task<IActionResult> UpdateMitra([FromBody] PostMitraDTO mitraDto)
+    {
+        var mitraFound = await _db.Mitra.FindAsync(mitraDto.IdMitra);
+        if (mitraFound is null)
+            return NotFound(new { message = "Mitra tidak ditemukan"});
+        
+        _db.UpdateEntry(mitraFound, mitraDto);
+        await _db.SaveChangesAsync();
+
+        return Ok();
     }
 }
 
