@@ -119,6 +119,8 @@ public class Database : IdentityDbContext
 
             // repot nih
             Setoran_API.NET.Models.Pengguna.Seed(context);
+            Setoran_API.NET.Models.Mitra.Seed(context);
+            Setoran_API.NET.Models.Pelanggan.Seed(context);
             Setoran_API.NET.Models.Motor.Seed(context);
             Setoran_API.NET.Models.Voucher.Seed(context);
 

@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using Bogus;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,12 +30,23 @@ public class Pengguna : IdentityUser
             return passwordHasher.HashPassword(user, password);
         }
 
-        var pengguna = new Pengguna
+        static DateTime randomDate()
+        {
+            var random = new Random();
+            DateTime start = new DateTime(1990, 1, 1);
+            DateTime end = new DateTime(2004, 12, 31);
+
+            int range = (end - start).Days;
+            return start.AddDays(random.Next(range + 1)).ToUniversalTime();
+        }
+
+        var admin = new Pengguna
         {
             Nama = "admin01",
             UserName = "admin01@mail.com",
             Email = "admin01@mail.com",
-            IsAdmin=true,
+            TanggalLahir=randomDate(),
+            IsAdmin = true,
             NormalizedUserName = "ADMIN01@MAIL.COM",
             NormalizedEmail = "ADMIN01@MAIL.COM",
             EmailConfirmed = true,
@@ -42,31 +54,42 @@ public class Pengguna : IdentityUser
             ConcurrencyStamp = Guid.NewGuid().ToString(),
             LockoutEnabled = true
         };
+        admin.PasswordHash = hashPassword(admin, "admin1234");
+        dbContext.Set<Pengguna>().Add(admin);
 
-        pengguna.PasswordHash = hashPassword(pengguna, "admin1234");
+        Notifikasi.CreateNotification(admin.Id, "Selamat datang di aplikasi Setoran", 
+            "Silahkan selesaikan proses registrasi dengan melengkapi data-data anda di halaman edit profile")
+            .ToEditProfile()
+            .Send(dbContext);
+        
+        // Use Bogus to generate fake users
+        var faker = new Faker("id_ID");
+        var userFaker = new Faker<Pengguna>("id_ID")
+            .RuleFor(u => u.Nama, f => f.Name.FullName())
+            .RuleFor(u => u.UserName, (f, u) => $"{$"{u.Nama}".Replace(" ", ".")}{f.Random.Number(9)}@mail.com")
+            .RuleFor(u => u.Email, (f, u) => u.UserName)
+            .RuleFor(u => u.TanggalLahir, (f, u) => randomDate())
+            .RuleFor(u => u.NormalizedUserName, (f, u) => u.UserName.ToUpper())
+            .RuleFor(u => u.NormalizedEmail, (f, u) => u.Email.ToUpper())
+            .RuleFor(u => u.EmailConfirmed, f => true)
+            .RuleFor(u => u.SecurityStamp, f => Guid.NewGuid().ToString())
+            .RuleFor(u => u.ConcurrencyStamp, f => Guid.NewGuid().ToString())
+            .RuleFor(u => u.LockoutEnabled, f => true)
+            .RuleFor(u => u.IsAdmin, f => false);
 
-        dbContext.Set<Pengguna>().Add(pengguna);
-        dbContext.SaveChanges();
-
-        // seed ke pelanggan
-        var pelanggan = new Pelanggan
+        var users = new List<Pengguna>();
+        for (int i = 0; i < 10; i++)
         {
-            IdPengguna = pengguna.Id
-        };
-        dbContext.Set<Pelanggan>().Add(pelanggan);
+            var user = userFaker.Generate();
+            user.PasswordHash = hashPassword(user, "user1234");
+            users.Add(user);
+            Notifikasi.CreateNotification(user.Id, "Selamat datang di aplikasi Setoran",
+                "Silahkan selesaikan proses registrasi dengan melengkapi data-data anda di halaman edit profile")
+                .ToEditProfile()
+                .Send(dbContext);
+        }
 
-        // seed ke mitra
-        var Mitra = new Mitra
-        {
-            IdPengguna = pengguna.Id
-        };
-        dbContext.Set<Mitra>().Add(Mitra);
-
-        var notifikasi = Setoran_API.NET.Models.Notifikasi.CreateNotification(pengguna.Id, "Selamat datang di aplikasi Setoran", "Silahkan selesaikan proses registrasi dengan melengkapi data-data anda di halaman edit profile")
-                .ToEditProfile();
-        // .Send(db);
-
-        dbContext.Set<Notifikasi>().Add(notifikasi);
+        dbContext.Set<Pengguna>().AddRange(users);
         dbContext.SaveChanges();
     }
 }

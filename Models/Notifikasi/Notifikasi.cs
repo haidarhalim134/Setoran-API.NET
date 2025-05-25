@@ -57,7 +57,7 @@ public class Notifikasi
     public void Send(DbContext db, bool sendFcm=true)
     {
         db.Set<Notifikasi>().Add(this);
-        WaktuNotifikasi = DateTime.Now;
+        WaktuNotifikasi = DateTime.Now.ToUniversalTime();
 
         if (sendFcm)
         {
