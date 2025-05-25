@@ -17,7 +17,7 @@ namespace Setoran_API.NET.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPembayaranById(int id)
+        public async Task<ActionResult<Pembayaran>> GetPembayaranById(int id)
         {
             var pembayaran = await _context.Pembayaran.FindAsync(id);
             if (pembayaran == null)
@@ -46,7 +46,7 @@ namespace Setoran_API.NET.Controllers
         {
             var pembayaran = await _context.Pembayaran
                 .FirstOrDefaultAsync(p => p.IdTransaksi == id);
-            
+
             if (pembayaran == null)
             {
                 return NotFound(new { message = "Pembayaran tidak ditemukan" });

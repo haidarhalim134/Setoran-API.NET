@@ -17,14 +17,14 @@ namespace Setoran_API.NET.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUlasan()
+        public async Task<ActionResult<List<Ulasan>>> GetUlasan()
         {
             var ulasans = await _context.Ulasan.ToListAsync();
             return Ok(ulasans);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUlasanById(int id)
+        public async Task<ActionResult<Ulasan>> GetUlasanById(int id)
         {
             var ulasan = await _context.Ulasan.FindAsync(id);
             if (ulasan == null)
