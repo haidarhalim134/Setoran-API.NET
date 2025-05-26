@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Setoran_API.NET.Models;
 
 namespace Setoran_API.NET.Controllers;
@@ -14,6 +15,17 @@ public class DiskonController : GenericControllerExtension<Diskon>
     public DiskonController(Database db)
     {
         _db = db;
+    }
+
+    [HttpGet("getAll")]
+    public async Task<ActionResult<IEnumerable<Diskon>>> GetAll([FromQuery] bool withMotor=false)
+    {   
+        if (withMotor)
+            return await _db.Diskon
+                .Include(m => m.Motor)
+                .ToListAsync();
+
+        return await _db.Diskon.ToListAsync();
     }
 
     [HttpPost]
