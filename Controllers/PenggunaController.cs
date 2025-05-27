@@ -11,9 +11,11 @@ namespace Setoran_API.NET.Controllers;
 public class PenggunaController : GenericControllerExtension<Pengguna, string>
 {
     private readonly Database _db;
-    public PenggunaController(Database db)
+    private readonly SupabaseService _supabaseService;
+    public PenggunaController(Database db, SupabaseService supabaseService)
     {
         _db = db;
+        _supabaseService = supabaseService;
     }
 
     [Authorize]
@@ -100,4 +102,26 @@ public class PenggunaController : GenericControllerExtension<Pengguna, string>
         return Ok();
     }
     
+    [HttpPost("updateProfileImage/{id}")]
+    public async Task<ActionResult<string>> UploadImage(IFormFile file, [FromRoute] string id)
+    {
+
+        if (file == null || file.Length == 0)
+            return BadRequest(new {message = "No file uploaded."});
+
+        try {
+            var fileName = await _supabaseService.StoreFile("image", file);
+
+            var pengguna = await _db.Pengguna.FindAsync(id);
+            if (pengguna is null)
+                return NotFound(new { message = "Pengguna tidak ditemukan" });
+            pengguna.IdGambar = fileName;
+            await _db.SaveChangesAsync();
+            
+            return Ok(fileName);
+        } catch {
+            return StatusCode(500, "Failed to upload image");
+        }
+
+    }
 }
