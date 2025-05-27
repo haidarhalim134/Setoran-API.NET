@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Setoran_API.NET.Models;
 
 namespace Setoran_API.NET.Controllers;
@@ -115,9 +116,14 @@ public class PenggunaController : GenericControllerExtension<Pengguna, string>
             var pengguna = await _db.Pengguna.FindAsync(id);
             if (pengguna is null)
                 return NotFound(new { message = "Pengguna tidak ditemukan" });
+            
+            if (!pengguna.IdGambar.IsNullOrEmpty())
+                await _supabaseService.DeleteFile("image", pengguna.IdGambar!);
+
             pengguna.IdGambar = fileName;
             await _db.SaveChangesAsync();
             
+
             return Ok(fileName);
         } catch {
             return StatusCode(500, "Failed to upload image");

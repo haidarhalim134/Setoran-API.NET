@@ -56,4 +56,12 @@ public class SupabaseService
         
         return fileName;
     }
+
+    public async Task DeleteFile(string bucket, string filename)
+    {
+        var response = await Client.Storage.From(bucket).Remove(filename);
+
+        if (response == null)
+            throw new Exception("Failed to upload image");
+    }
 }
