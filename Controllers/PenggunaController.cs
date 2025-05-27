@@ -117,8 +117,12 @@ public class PenggunaController : GenericControllerExtension<Pengguna, string>
             if (pengguna is null)
                 return NotFound(new { message = "Pengguna tidak ditemukan" });
             
-            if (!pengguna.IdGambar.IsNullOrEmpty())
-                await _supabaseService.DeleteFile("image", pengguna.IdGambar!);
+            try
+            {
+                if (!pengguna.IdGambar.IsNullOrEmpty())
+                    await _supabaseService.DeleteFile("image", pengguna.IdGambar!);
+            }
+            catch (System.Exception) { } // kalau error biaring aja
 
             pengguna.IdGambar = fileName;
             await _db.SaveChangesAsync();
