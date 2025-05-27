@@ -18,7 +18,7 @@ public class StorageController : ControllerBase
     }
 
     [HttpPost("store")]
-    public async Task<IActionResult> UploadImage(IFormFile file)
+    public async Task<ActionResult<string>> UploadImage(IFormFile file)
     {
 
         if (file == null || file.Length == 0)
@@ -26,7 +26,7 @@ public class StorageController : ControllerBase
 
         try {
             var fileName = await _supabaseService.StoreFile("image", file);
-            return Ok(new { url = fileName });
+            return Ok(fileName);
         } catch {
             return StatusCode(500, "Failed to upload image");
         }
