@@ -30,7 +30,7 @@ jobs:
           git pull origin main
 
           # Start new screen session and run your app (adjust this command)
-          screen -dmS setoran bash -c 'dotnet run --urls "https://0.0.0.0:5104"'
+          screen -dmS setoran bash -c 'dotnet run --urls "http://0.0.0.0:5103;https://0.0.0.0:5104"'
     - name: Verify deployment is live
       run: |
         sleep 60
