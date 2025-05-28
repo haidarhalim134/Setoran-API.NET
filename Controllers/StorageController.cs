@@ -34,7 +34,7 @@ public class StorageController : ControllerBase
     }
 
     [HttpGet("fetch/{fileName}")]
-    public async Task<ActionResult> GetItem([FromRoute] string fileName)
+    public async Task<ActionResult<byte[]>> GetItem([FromRoute] string fileName)
     {
         try {
             var bucket = "image"; 
