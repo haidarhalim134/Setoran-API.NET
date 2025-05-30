@@ -50,7 +50,7 @@ public class VoucherController : GenericControllerExtension<Voucher>
         return Ok(newVoucher);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{idVoucher}")]
     public ActionResult Update(Database db, [FromRoute] int idVoucher, [FromBody] PostVoucherDTO voucher)
     {
         var voucherFound = db.Voucher.FirstOrDefault(v => v.IdVoucher == idVoucher);
