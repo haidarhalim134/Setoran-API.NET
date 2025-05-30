@@ -11,6 +11,8 @@ namespace Setoran_API.NET.Models
         public int IdPelanggan { get; set; }
         public DateTime TanggalMulai { get; set; }
         public DateTime TanggalSelesai { get; set; }
+
+        [Column(TypeName = "decimal(18,2)")]
         public decimal TotalHarga { get; set; }
         public string Status { get; set; }
 
