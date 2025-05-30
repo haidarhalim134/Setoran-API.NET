@@ -81,7 +81,7 @@ namespace Setoran_API.NET.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateMotor([FromBody] MotorForm request)
+        public async Task<ActionResult<Motor>> CreateMotor([FromBody] MotorForm request)
         {
             if (!ModelState.IsValid)
             {

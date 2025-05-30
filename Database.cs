@@ -21,6 +21,7 @@ public class Database : IdentityDbContext
     public DbSet<Diskon> Diskon { get; set; }
     public DbSet<Notifikasi> Notifikasi { get; set; }
     public DbSet<DeviceToken> DeviceToken { get; set; }
+    public DbSet<MotorImage> MotorImage { get; set; }
 
     public Database()
     {
