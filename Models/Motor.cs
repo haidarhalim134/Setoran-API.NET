@@ -18,13 +18,17 @@ namespace Setoran_API.NET.Models
         public int Tahun { get; set; }
         public string Transmisi { get; set; }
         public string StatusMotor { get; set; }
-        
+
         [Column(TypeName = "decimal(18,2)")]
         public decimal HargaHarian { get; set; }
         public List<Diskon> Diskon { get; set; }
+        public int? IdMotorImage { get; set; }
 
         [ForeignKey("IdMitra")]
         public Mitra Mitra { get; set; }
+
+        [ForeignKey("IdMotorImage")]
+        public MotorImage? MotorImage { get; set; }
 
         public static void Seed(DbContext dbContext)
         {
