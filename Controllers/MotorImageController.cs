@@ -15,18 +15,25 @@ namespace Setoran_API.NET.Controllers
         }
 
         [HttpPost()]
-        public async Task<ActionResult<MotorImage>> CreateMotorImage([FromBody] MotorImage motorImage)
+        public async Task<ActionResult<MotorImage>> CreateMotorImage([FromBody] PostMotorImageDTO postMotorImageDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("Motor image data is required.");
             }
-            var motor = await _context.Motor.FindAsync(motorImage.IdMotor);
+            var motor = await _context.Motor.FindAsync(postMotorImageDTO.IdMotor);
             if (motor == null)
             {
-                return NotFound($"Motor with ID {motorImage.IdMotor} not found.");
+                return NotFound($"Motor with ID {postMotorImageDTO.IdMotor} not found.");
             }
-
+            var motorImage = new MotorImage
+            {
+                IdMotor = postMotorImageDTO.IdMotor,
+                Front = postMotorImageDTO.Front,
+                Left = postMotorImageDTO.Left,
+                Right = postMotorImageDTO.Right,
+                Rear = postMotorImageDTO.Rear
+            };
             _context.MotorImage.Add(motorImage);
             await _context.SaveChangesAsync();
 
