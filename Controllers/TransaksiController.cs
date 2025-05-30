@@ -20,7 +20,7 @@ namespace Setoran_API.NET.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Transaksi>>> GetTransaksi([FromQuery] TransaksiQuery query)
         {
-            var transaksis = _context.Transaksi.Include(t => t.Motor).AsQueryable();
+            var transaksis = _context.Transaksi.Include(t => t.Motor).ThenInclude(m => m.Mitra).AsQueryable();
 
 
             // filter by IdMotor or IdPelanggan or IdMitra
