@@ -50,10 +50,10 @@ public class VoucherController : GenericControllerExtension<Voucher>
         return Ok(newVoucher);
     }
 
-    [HttpPut()]
-    public ActionResult Update(Database db, [FromBody] Voucher voucher)
+    [HttpPut("{id}")]
+    public ActionResult Update(Database db, [FromRoute] int idVoucher, [FromBody] PostVoucherDTO voucher)
     {
-        var voucherFound = db.Voucher.FirstOrDefault(v => v.IdVoucher == voucher.IdVoucher);
+        var voucherFound = db.Voucher.FirstOrDefault(v => v.IdVoucher == idVoucher);
         if (voucherFound is null)
             return NotFound(new {message = "Voucher tidak ditemukan"});
 
