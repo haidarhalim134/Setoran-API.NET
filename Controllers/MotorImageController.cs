@@ -17,7 +17,7 @@ namespace Setoran_API.NET.Controllers
         [HttpPost()]
         public async Task<ActionResult<MotorImage>> CreateMotorImage([FromBody] MotorImage motorImage)
         {
-            if (motorImage == null)
+            if (!ModelState.IsValid)
             {
                 return BadRequest("Motor image data is required.");
             }
@@ -28,6 +28,10 @@ namespace Setoran_API.NET.Controllers
             }
 
             _context.MotorImage.Add(motorImage);
+            await _context.SaveChangesAsync();
+
+            motor.IdMotorImage = motorImage.Id;
+            _context.Motor.Update(motor);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(CreateMotorImage), new { id = motorImage.Id }, motorImage);
