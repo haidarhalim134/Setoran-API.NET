@@ -28,11 +28,11 @@ namespace Setoran_API.NET.Controllers
             {
                 transaksis = transaksis.Where(t => t.IdMotor.ToString() == query.IdMotor);
             }
-            else if (!string.IsNullOrEmpty(query.IdPelanggan))
+            if (!string.IsNullOrEmpty(query.IdPelanggan))
             {
-                transaksis = transaksis.Where(t => t.IdPelanggan.ToString() == query.IdPelanggan);
+                transaksis = transaksis.Where(t => t.IdPelanggan == int.Parse(query.IdPelanggan));
             }
-            else if (!string.IsNullOrEmpty(query.IdMitra))
+            if (!string.IsNullOrEmpty(query.IdMitra))
             {
                 // TODO filter by IdMitra
                 transaksis = transaksis.Where(t => t.Motor.IdMitra.ToString() == query.IdMitra);
