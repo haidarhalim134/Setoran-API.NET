@@ -10,25 +10,40 @@ namespace Setoran_API.NET.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<decimal>(
-                name: "TotalHarga",
+            migrationBuilder.AddColumn<decimal>(
+                name: "TotalHargaTemp",
                 table: "Transaksi",
                 type: "numeric(18,2)",
-                nullable: false,
-                oldClrType: typeof(decimal),
-                oldType: "numeric");
-        }
+                nullable: true);
 
-        /// <inheritdoc />
+            migrationBuilder.Sql(@"
+                UPDATE ""Transaksi""
+                SET ""TotalHargaTemp"" = 
+                    CASE 
+                        WHEN trim(""TotalHarga"") ~ '^\d+(\.\d+)?$' THEN CAST(""TotalHarga"" AS numeric(18,2))
+                        ELSE 0
+                    END
+            ");
+
+            migrationBuilder.DropColumn(
+                name: "TotalHarga",
+                table: "Transaksi");
+
+            migrationBuilder.RenameColumn(
+                name: "TotalHargaTemp",
+                table: "Transaksi",
+                newName: "TotalHarga");
+
+        }
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<decimal>(
+            migrationBuilder.AlterColumn<string>(
                 name: "TotalHarga",
                 table: "Transaksi",
-                type: "numeric",
-                nullable: false,
+                type: "text",
+                nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric(18,2)");
-        }
+            }
     }
 }
