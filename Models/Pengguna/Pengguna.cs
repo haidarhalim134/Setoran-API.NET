@@ -90,7 +90,7 @@ public class Pengguna : IdentityUser
             .RuleFor(u => u.NomorTelepon, f => f.Phone.PhoneNumber("08##########"))
             .RuleFor(u => u.NomorKTP, f => f.Random.ReplaceNumbers("32##############"))
             .RuleFor(u => u.Alamat, f => f.Address.FullAddress())
-            .RuleFor(u => u.IdGambar, f => $"user-{f.Random.Number(1, 100)}.jpg")
+            // .RuleFor(u => u.IdGambar, f => $"user-{f.Random.Number(1, 100)}.jpg") // harus upload gambar beneran
             .RuleFor(u => u.IsAdmin, f => false)
             .RuleFor(u => u.EmailConfirmed, f => true)
             .RuleFor(u => u.SecurityStamp, f => Guid.NewGuid().ToString())

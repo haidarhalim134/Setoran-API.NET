@@ -35,6 +35,7 @@ namespace Setoran_API.NET.Controllers
             else if (!string.IsNullOrEmpty(query.IdMitra))
             {
                 // TODO filter by IdMitra
+                transaksis = transaksis.Where(t => t.Motor.IdMitra.ToString() == query.IdMitra);
             }
 
             if (!string.IsNullOrEmpty(query.Status))
