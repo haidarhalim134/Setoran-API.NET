@@ -124,6 +124,7 @@ public class Database : IdentityDbContext
             Setoran_API.NET.Models.Pelanggan.Seed(context);
             Setoran_API.NET.Models.Motor.Seed(context);
             Setoran_API.NET.Models.Voucher.Seed(context);
+            Setoran_API.NET.Models.Transaksi.Seed(context);
 
             context.SaveChanges();
         });
