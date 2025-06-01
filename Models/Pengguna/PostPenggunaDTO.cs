@@ -14,6 +14,7 @@ public class PostPenggunaDTO
     public string? NomorKTP { get; set; }
     public string? Alamat { get; set; }
     public string? IdGambar { get; set; }
+    public bool? IsAdmin { get; set; }
 
     public Pengguna ToPengguna()
     {
