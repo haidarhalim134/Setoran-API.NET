@@ -19,7 +19,15 @@ namespace Setoran_API.NET.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Motor>>> GetMotors([FromQuery] MotorQuery query)
         {
-            var motors = _context.Motor.AsQueryable();
+            IQueryable<Motor> motors;
+            if (query.WithImage)
+            {
+                motors = _context.Motor.Include(m => m.MotorImage).AsQueryable();
+            }
+            else
+            {
+                motors = _context.Motor.AsQueryable();
+            }
             if (!string.IsNullOrEmpty(query.IdMitra))
             {
                 motors = motors.Where(m => m.IdMitra == int.Parse(query.IdMitra));
@@ -36,16 +44,6 @@ namespace Setoran_API.NET.Controllers
             {
                 motors = motors.Where(m => m.Transmisi == query.Transmisi);
             }
-
-            // List<Motor> result;
-            // if (motors != null)
-            // {
-            //     result = await motors.ToListAsync();
-            // }
-            // else
-            // {
-            //     result = new List<Motor>();
-            // }
 
             var result = await motors.ToListAsync();
 
