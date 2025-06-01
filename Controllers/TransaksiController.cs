@@ -79,6 +79,33 @@ namespace Setoran_API.NET.Controllers
 
             var totalHarga = motor.HargaHarian * (transaksi.TanggalSelesai - transaksi.TanggalMulai).Days;
 
+            if (transaksi.idDiscount != null)
+            {
+                var diskon = await _context.Diskon.FindAsync(transaksi.idDiscount);
+                if (diskon == null)
+                {
+                    return NotFound("Diskon tidak ditemukan");
+                }
+                totalHarga = totalHarga - diskon.JumlahDiskon;
+            }
+
+            if (transaksi.idVoucher != null)
+            {
+                var voucher = await _context.Voucher.FindAsync(transaksi.idVoucher);
+                if (voucher == null)
+                {
+                    return NotFound("Voucher tidak ditemukan");
+                }
+                totalHarga = totalHarga - voucher.PersenVoucher * totalHarga / 100;
+                var pelanggan = await _context.Pelanggan.FindAsync(transaksi.IdPelanggan);
+                if (pelanggan == null)
+                {
+                    return NotFound("Pelanggan tidak ditemukan");
+                }
+                Voucher.UseVoucher(_context, voucher, pelanggan);
+            }
+
+
             var newTransaksi = new Transaksi
             {
                 IdMotor = transaksi.IdMotor,
