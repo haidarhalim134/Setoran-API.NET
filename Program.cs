@@ -102,13 +102,13 @@ var app = builder.Build();
 
 app.MapHealthChecks("/health");
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+// biar bisa swagger setelah build
+// if (app.Environment.IsDevelopment())
+// {
     app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+// }
 
 // app.UseHttpsRedirection();
 

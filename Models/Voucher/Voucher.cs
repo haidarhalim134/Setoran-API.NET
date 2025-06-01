@@ -24,7 +24,7 @@ namespace Setoran_API.NET.Models
         {
             return db.Voucher
                 .Where(v => v.StatusVoucher == StatusVoucher.Aktif)
-                .Where(v => v.TanggalMulai <= DateTime.Now && DateTime.Now <= v.TanggalAkhir)
+                .Where(v => v.TanggalMulai <= DateTime.Now.ToUniversalTime() && DateTime.Now.ToUniversalTime() <= v.TanggalAkhir)
                 .Where(v => !db.VoucherUsed.Any(vu => vu.Voucher.IdVoucher == v.IdVoucher && vu.Pelanggan.IdPelanggan == pelanggan.IdPelanggan));
         }
         
