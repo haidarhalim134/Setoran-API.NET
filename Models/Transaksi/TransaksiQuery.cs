@@ -1,7 +1,7 @@
 public class TransaksiQuery
 {
-    public string? IdMotor;
-    public string? IdPelanggan;
-    public string? IdMitra;
-    public string? Status;
+    public string? IdMotor { get; set; }
+    public string? IdPelanggan { get; set; }
+    public string? IdMitra { get; set; }
+    public string? Status { get; set; }
 }
