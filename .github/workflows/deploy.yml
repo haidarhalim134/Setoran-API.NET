@@ -33,7 +33,7 @@ jobs:
           dotnet publish -c Release -o ./publish
 
           # Start new screen session and run the published app
-          screen -dmS setoran bash -c './publish/Setoran-API.NET --urls "http://0.0.0.0:5103;https://0.0.0.0:5104"' 
+          screen -dmS setoran bash -c './publish/Setoran-API.NET --urls "http://0.0.0.0:5103;https://0.0.0.0:5104;https://0.0.0.0:443;http://0.0.0.0:80"' 
     - name: Verify deployment is live
       run: |
         sleep 60
