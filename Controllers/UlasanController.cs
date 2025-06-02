@@ -48,7 +48,7 @@ namespace Setoran_API.NET.Controllers
                 IdPelanggan = ulasan.IdPelanggan,
                 Rating = ulasan.Rating,
                 Komentar = ulasan.Komentar,
-                TanggalUlasan = DateTime.Now
+                TanggalUlasan = DateTime.Now.ToUniversalTime()
             };
 
             _context.Ulasan.Add(newUlasan);
