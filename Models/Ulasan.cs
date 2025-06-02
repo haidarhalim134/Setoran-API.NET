@@ -12,8 +12,6 @@ namespace Setoran_API.NET.Models
         public int Rating { get; set; }
         public string Komentar { get; set; }
         public DateTime TanggalUlasan { get; set; }
-
-        [ForeignKey("IdMotor")]
         public Motor Motor { get; set; }
 
         [ForeignKey("IdPelanggan")]
