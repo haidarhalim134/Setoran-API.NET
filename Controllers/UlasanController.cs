@@ -37,10 +37,10 @@ namespace Setoran_API.NET.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUlasan([FromBody] PostUlasanDTO ulasan)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            // if (!ModelState.IsValid)
+            // {
+            //     return BadRequest(ModelState);
+            // }
 
             var newUlasan = new Ulasan
             {
