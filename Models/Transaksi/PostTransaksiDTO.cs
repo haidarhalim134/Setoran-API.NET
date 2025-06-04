@@ -10,6 +10,8 @@ public record class PostTransaksiDTO
     public DateTime TanggalMulai { get; set; }
     [Required]
     public DateTime TanggalSelesai { get; set; }
+    [Required]
+    public string MetodePembayaran { get; set; }
     public int? idVoucher { get; set; }
     public int? idDiscount { get; set; }
 }
