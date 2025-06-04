@@ -22,6 +22,7 @@ namespace Setoran_API.NET.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal HargaHarian { get; set; }
         public List<Diskon> Diskon { get; set; }
+        public List<Ulasan> Ulasan { get; set; }
         public int? IdMotorImage { get; set; }
 
         [ForeignKey("IdMitra")]

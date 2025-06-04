@@ -62,6 +62,11 @@ public class Database : IdentityDbContext
             .WithMany(e => e.Diskon)
             .HasForeignKey(p => p.IdMotor);
 
+        modelBuilder.Entity<Ulasan>()
+            .HasOne(e => e.Motor)
+            .WithMany(e => e.Ulasan)
+            .HasForeignKey(p => p.IdMotor);
+            
         modelBuilder.Entity<Voucher>()
             .HasMany(e => e.Pelanggans)
             .WithMany(e => e.UsedVouchers)
