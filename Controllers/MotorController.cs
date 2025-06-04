@@ -135,5 +135,19 @@ namespace Setoran_API.NET.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteMotor(int id)
+        {
+            var motor = await _context.Motor.FindAsync(id);
+            if (motor == null)
+            {
+                return NotFound("Motor tidak ditemukan");
+            }
+
+            _context.Motor.Remove(motor);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }
