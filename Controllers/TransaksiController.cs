@@ -117,7 +117,16 @@ namespace Setoran_API.NET.Controllers
             };
 
             await _context.Transaksi.AddAsync(newTransaksi);
+
+            await _context.Pembayaran.AddAsync(new Pembayaran
+            {
+                IdTransaksi = newTransaksi.IdTransaksi,
+                MetodePembayaran = transaksi.MetodePembayaran,
+                StatusPembayaran = "Belum Lunas",
+                TanggalPembayaran = null
+            });
             await _context.SaveChangesAsync();
+
             return CreatedAtAction(nameof(GetTransaksiById), new { id = newTransaksi.IdTransaksi }, newTransaksi);
         }
 

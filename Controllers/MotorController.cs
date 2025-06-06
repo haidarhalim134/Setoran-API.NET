@@ -19,15 +19,20 @@ namespace Setoran_API.NET.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Motor>>> GetMotors([FromQuery] MotorQuery query)
         {
-            IQueryable<Motor> motors;
+            IQueryable<Motor> motors = _context.Motor;
             if (query.WithImage)
             {
-                motors = _context.Motor.Include(m => m.MotorImage).AsQueryable();
+                motors = motors.Include(m => m.MotorImage);
             }
-            else
+            if (query.WithDiskon)
             {
-                motors = _context.Motor.AsQueryable();
+                motors = motors.Include(m => m.Diskon);
             }
+            if (query.WithUlasan)
+            {
+                motors = motors.Include(m => m.Ulasan);
+            }
+
             if (!string.IsNullOrEmpty(query.IdMitra))
             {
                 motors = motors.Where(m => m.IdMitra == int.Parse(query.IdMitra));
@@ -76,6 +81,21 @@ namespace Setoran_API.NET.Controllers
             var ulasans = await _context.Ulasan.Where(u => u.IdMotor == id).ToListAsync();
 
             return Ok(ulasans);
+        }
+
+        [HttpGet("{id}/diskons")]
+        public async Task<ActionResult<List<Diskon>>> GetDiskonByMotorId(int id)
+        {
+            var motor = await _context.Motor.FindAsync(id);
+
+            if (motor == null)
+            {
+                return NotFound("Motor tidak ditemukan");
+            }
+
+            var diskons = await _context.Diskon.Where(u => u.IdMotor == id).ToListAsync();
+
+            return Ok(diskons);
         }
 
         [HttpPost]
@@ -132,6 +152,20 @@ namespace Setoran_API.NET.Controllers
             motor.HargaHarian = request.HargaHarian;
 
             _context.Motor.Update(motor);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteMotor(int id)
+        {
+            var motor = await _context.Motor.FindAsync(id);
+            if (motor == null)
+            {
+                return NotFound("Motor tidak ditemukan");
+            }
+
+            _context.Motor.Remove(motor);
             await _context.SaveChangesAsync();
             return NoContent();
         }

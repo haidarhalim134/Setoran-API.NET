@@ -34,7 +34,7 @@ namespace Setoran_API.NET.Controllers
             var pembayarans = await _context.Pembayaran.ToListAsync();
             if (!pembayarans.Any())
             {
-                return NotFound(new { message = "Data pembayaran kosong" });
+                return NotFound();
             }
 
             return Ok(pembayarans);
@@ -49,7 +49,7 @@ namespace Setoran_API.NET.Controllers
 
             if (pembayaran == null)
             {
-                return NotFound(new { message = "Pembayaran tidak ditemukan" });
+                return NotFound();
             }
 
             return Ok(pembayaran);
