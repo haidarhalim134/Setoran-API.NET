@@ -37,6 +37,30 @@ public class SupabaseService
 
         return await StoreFile(bucket, file.FileName, fileBytes);
     }
+    public async Task<string?> StoreFile(string bucket, string? base64)
+    {
+        if (string.IsNullOrWhiteSpace(base64)) return null;
+
+        try
+        {
+            var base64Parts = base64.Split(",", 2);
+            var header = base64Parts.Length > 1 ? base64Parts[0] : "";
+            var bytes = Convert.FromBase64String(base64Parts.Length > 1 ? base64Parts[1] : base64Parts[0]);
+
+            string extension = ".jpg"; 
+            var match = System.Text.RegularExpressions.Regex.Match(header, @"data:image/(?<type>\w+);base64");
+            if (match.Success)
+            {
+                extension = "." + match.Groups["type"].Value;
+            }
+            // label gak penting soalnya cuma di ambil extension
+            return await StoreFile(bucket, "label" + extension, bytes);
+        }
+        catch
+        {
+            throw new Exception($"Failed to process base64 image for.");
+        }
+    }
     // kalau misalnya mau nerima file dalam bentuk base64 -> byte[] (belum coba sih)
     public async Task<string> StoreFile(string bucket, string fileName, byte[] fileBytes)
     {
@@ -45,7 +69,7 @@ public class SupabaseService
 
         var response = await Client.Storage
             .From(bucket)
-            .Upload(fileBytes, fileName, new Supabase.Storage.FileOptions { Upsert=true});
+            .Upload(fileBytes, fileName, new Supabase.Storage.FileOptions { Upsert = true });
 
         if (response == null)
             throw new Exception("Failed to upload image");
@@ -53,7 +77,7 @@ public class SupabaseService
         var publicUrl = Client.Storage
             .From(bucket)
             .GetPublicUrl(fileName);
-        
+
         return fileName;
     }
 
