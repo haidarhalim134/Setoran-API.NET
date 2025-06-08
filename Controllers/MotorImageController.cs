@@ -62,6 +62,7 @@ namespace Setoran_API.NET.Controllers
                 return NotFound($"Motor image for motor ID {putMotorImageDTO.IdMotor} not found.");
             }
 
+            // kalau sempet delete gambar lama sebelum di update
             if (putMotorImageDTO.Front != null)
                 motorImage.Front = await _supabaseService.StoreFile("image", putMotorImageDTO.Front);
 
