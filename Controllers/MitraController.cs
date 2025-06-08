@@ -67,7 +67,7 @@ public class MitraController : GenericControllerExtension<Mitra>
         return Ok(data);
     }
 
-    [Authorize]
+    // [Authorize]
     [HttpPut]
     public async Task<IActionResult> UpdateMitra([FromBody] PostMitraDTO mitraDto)
     {

@@ -23,7 +23,7 @@ public class PelangganController : GenericControllerExtension<Pelanggan>
         return HttpContext.GetCurrentPelanggan(_db);
     }
 
-    [Authorize]
+    // [Authorize]
     [HttpPut]
     public async Task<IActionResult> UpdatePelanggan([FromBody] PostPelangganDTO pelangganDto)
     {

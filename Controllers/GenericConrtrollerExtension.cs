@@ -5,7 +5,7 @@ namespace Setoran_API.NET.Controllers;
 
 public class GenericControllerExtension<T, I> : ControllerBase where T : class
 {
-    [Authorize]
+    // [Authorize]
     [HttpGet("generic/{id}")]
     public ActionResult<T?> GetOne(Database db, [FromRoute] I id)
     {
@@ -16,7 +16,7 @@ public class GenericControllerExtension<T, I> : ControllerBase where T : class
         return entity;
     }
 
-    [Authorize]
+    // [Authorize]
     [HttpDelete("generic/{id}")]
     public ActionResult Delete(Database db, [FromRoute] I id)
     {
