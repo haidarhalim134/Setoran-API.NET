@@ -70,24 +70,39 @@ public class VoucherController : GenericControllerExtension<Voucher>
 
         if (!string.IsNullOrEmpty(search))
         {
-            // TODO: extend biar bisa search non string juga, e.g. date
-            var properties = typeof(Voucher).GetProperties()
-                .Where(p => p.PropertyType == typeof(string)).ToList(); 
+            var properties = typeof(Voucher).GetProperties().ToList();
 
             var whereClauses = new StringBuilder();
             var parameters = new List<object>();
+            int paramIndex = 0;
 
-            for (int i = 0; i < properties.Count; i++)
+            foreach (var prop in properties)
             {
-                var column = properties[i].Name;
-                if (i > 0) whereClauses.Append(" OR ");
-                whereClauses.Append($"\"{column}\" LIKE @p{i}");
-                parameters.Add($"%{search}%");
+                var column = prop.Name;
+
+                if (prop.PropertyType == typeof(string))
+                {
+                    if (whereClauses.Length > 0) whereClauses.Append(" OR ");
+                    whereClauses.Append($"LOWER(\"{column}\") LIKE LOWER(@p{paramIndex})");
+                    parameters.Add($"%{search}%");
+                    paramIndex++;
+                }
+                else if (prop.PropertyType == typeof(DateTime) || prop.PropertyType == typeof(DateTime?))
+                {
+                    if (paramIndex > 0) whereClauses.Append(" OR ");
+                    whereClauses.Append($"LOWER(TO_CHAR(\"{prop.Name}\", 'FMDD FMMonth YYYY')) LIKE LOWER(@p{paramIndex})");
+                    parameters.Add($"%{search}%");
+                    paramIndex++;
+                }
             }
 
-            var interpolatedSql = FormattableStringFactory.Create($"select * from \"Voucher\" WHERE {whereClauses}", parameters.ToArray());
+            if (whereClauses.Length > 0)
+            {
+                var interpolatedSql = FormattableStringFactory.Create(
+                    $"SELECT * FROM \"Voucher\" WHERE {whereClauses}", parameters.ToArray());
 
-            query = db.Voucher.FromSqlInterpolated(interpolatedSql);
+                query = db.Voucher.FromSqlInterpolated(interpolatedSql);
+            }
         }
 
         if (status != null)
