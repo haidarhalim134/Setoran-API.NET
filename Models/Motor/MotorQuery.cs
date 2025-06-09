@@ -8,6 +8,6 @@ public class MotorQuery
     public String? IdMitra { get; set; }
     public StatusMotor? Status { get; set; }
     public string? Model { get; set; }
-    public string? Transmisi { get; set; }
+    public TransmisiMotor? Transmisi { get; set; }
 
 }

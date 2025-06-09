@@ -31,7 +31,7 @@ public record class MotorForm
     public int Tahun { get; set; }
 
     [Required]
-    public string Transmisi { get; set; }
+    public TransmisiMotor Transmisi { get; set; }
 
     [Required]
     public StatusMotor StatusMotor { get; set; }

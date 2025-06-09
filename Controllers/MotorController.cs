@@ -45,7 +45,7 @@ namespace Setoran_API.NET.Controllers
             {
                 motors = motors.Where(m => m.Model == query.Model);
             }
-            if (!string.IsNullOrEmpty(query.Transmisi))
+            if (query.Transmisi != null)
             {
                 motors = motors.Where(m => m.Transmisi == query.Transmisi);
             }

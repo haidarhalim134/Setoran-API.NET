@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Bogus;
 using Microsoft.EntityFrameworkCore;
 
 namespace Setoran_API.NET.Models
@@ -16,7 +17,7 @@ namespace Setoran_API.NET.Models
         public string Brand { get; set; }
         public string Tipe { get; set; }
         public int Tahun { get; set; }
-        public string Transmisi { get; set; }
+        public TransmisiMotor Transmisi { get; set; }
         public StatusMotor StatusMotor { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
@@ -33,6 +34,7 @@ namespace Setoran_API.NET.Models
 
         public static void Seed(DbContext dbContext)
         {
+            var faker = new Faker("id_ID");
             var mitra = dbContext.Set<Mitra>().FirstOrDefault();
             if (mitra == null) return;
 
@@ -74,7 +76,7 @@ namespace Setoran_API.NET.Models
                     Brand = brand,
                     Tipe = "",
                     Tahun = tahun,
-                    Transmisi = transmisiOptions[random.Next(transmisiOptions.Length)],
+                    Transmisi = faker.PickRandom<TransmisiMotor>(),
                     StatusMotor = StatusMotor.Tersedia,
                     HargaHarian = harga
                 };
@@ -100,5 +102,11 @@ namespace Setoran_API.NET.Models
         Disewa,
         DalamPerbaikan,
         TidakTersedia
+    }
+
+    public enum TransmisiMotor
+    {
+        Matic,
+        Manual
     }
 }
