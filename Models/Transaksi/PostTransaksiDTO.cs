@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Setoran_API.NET.Models;
 
 public record class PostTransaksiDTO
 {
@@ -11,7 +12,7 @@ public record class PostTransaksiDTO
     [Required]
     public DateTime TanggalSelesai { get; set; }
     [Required]
-    public string MetodePembayaran { get; set; }
+    public MetodePembayaran MetodePembayaran { get; set; }
     public int? idVoucher { get; set; }
     public int? idDiscount { get; set; }
 }

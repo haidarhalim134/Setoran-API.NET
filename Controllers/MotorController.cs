@@ -37,7 +37,7 @@ namespace Setoran_API.NET.Controllers
             {
                 motors = motors.Where(m => m.IdMitra == int.Parse(query.IdMitra));
             }
-            if (!string.IsNullOrEmpty(query.Status))
+            if (query.Status != null)
             {
                 motors = motors.Where(m => m.StatusMotor == query.Status);
             }

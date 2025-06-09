@@ -21,11 +21,11 @@ namespace Setoran_API.NET.Controllers
         {
             var result = new DashboardDataDTO
             {
-                AvailableMotorCount = await _db.Motor.Where(m => m.StatusMotor == "Tersedia").CountAsync(),
-                FiledMotorCount = await _db.Motor.Where(m => m.StatusMotor == "Diajukan").CountAsync(),
-                TransaksiOngoing = await _db.Transaksi.Where(t => t.Status == "berlangsung").CountAsync(),
+                AvailableMotorCount = await _db.Motor.Where(m => m.StatusMotor == StatusMotor.Tersedia).CountAsync(),
+                FiledMotorCount = await _db.Motor.Where(m => m.StatusMotor == StatusMotor.Diajukan).CountAsync(),
+                TransaksiOngoing = await _db.Transaksi.Where(t => t.Status == StatusTransaksi.Berlangsung).CountAsync(),
                 TotalIncome = await _db.Transaksi.SumAsync(t => t.TotalHarga),
-                ChartTransaksi = await _db.Transaksi.Where(t => t.Status == "selesai").ToListAsync(),
+                ChartTransaksi = await _db.Transaksi.Where(t => t.Status == StatusTransaksi.Selesai).ToListAsync(),
             };
             return Ok(result);
         }
