@@ -1,3 +1,4 @@
+using Mapster;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,24 @@ namespace Setoran_API.NET.Controllers
                 ChartTransaksi = await _db.Transaksi.Where(t => t.Status == "selesai").ToListAsync(),
             };
             return Ok(result);
+        }
+
+        [HttpGet("motorTableData")]
+        public async Task<ActionResult<List<MotorTableDTO>>> GetMotorTableData()
+        {
+            static MotorTableDTO toDto(Motor motor)
+            {
+                MotorTableDTO data = motor.Adapt<MotorTableDTO>();
+                data.OwnerName = motor.Mitra.Pengguna.Nama;
+                data.OwnerId = motor.Mitra.Pengguna.Id;
+
+                return data;
+            }
+            return _db.Motor
+                .Include(m => m.Mitra)
+                .ThenInclude(mitra => mitra.Pengguna)
+                .Select(toDto)
+                .ToList();
         }
     }
 }
