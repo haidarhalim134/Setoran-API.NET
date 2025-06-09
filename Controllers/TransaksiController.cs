@@ -62,10 +62,10 @@ namespace Setoran_API.NET.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTransaksi([FromBody] PostTransaksiDTO transaksi)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            // if (!ModelState.IsValid)
+            // {
+            //     return BadRequest(ModelState);
+            // }
 
             var motor = await _context.Motor.FindAsync(transaksi.IdMotor);
             if (motor == null)
