@@ -67,7 +67,7 @@ namespace Setoran_API.NET.Controllers
             {
                 IdTransaksi = pembayaran.IdTransaksi,
                 MetodePembayaran = pembayaran.MetodePembayaran,
-                StatusPembayaran = "Belum Lunas",
+                StatusPembayaran = StatusPembayaran.BelumLunas,
                 TanggalPembayaran = null
             };
 

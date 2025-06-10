@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Bogus;
 using Microsoft.EntityFrameworkCore;
 
 namespace Setoran_API.NET.Models
@@ -16,8 +17,8 @@ namespace Setoran_API.NET.Models
         public string Brand { get; set; }
         public string Tipe { get; set; }
         public int Tahun { get; set; }
-        public string Transmisi { get; set; }
-        public string StatusMotor { get; set; }
+        public TransmisiMotor Transmisi { get; set; }
+        public StatusMotor StatusMotor { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal HargaHarian { get; set; }
@@ -33,23 +34,24 @@ namespace Setoran_API.NET.Models
 
         public static void Seed(DbContext dbContext)
         {
-                var mitra = dbContext.Set<Mitra>().FirstOrDefault();
-                if (mitra == null) return;
+            var faker = new Faker("id_ID");
+            var mitra = dbContext.Set<Mitra>().FirstOrDefault();
+            if (mitra == null) return;
 
-                var transmisiOptions = new[] { "Matic", "Manual" };
-                var regionCodes = new[] { "B", "D", "F", "E", "Z", "T" };
-                var random = new Random();
+            var transmisiOptions = new[] { "Matic", "Manual" };
+            var regionCodes = new[] { "B", "D", "F", "E", "Z", "T" };
+            var random = new Random();
 
-                string RandomPlatNomor()
-                {
-                    var region = regionCodes[random.Next(regionCodes.Length)];
-                    var numbers = random.Next(1000, 9999);
-                    var letters = new string(Enumerable.Range(0, 3).Select(_ => (char)random.Next('A', 'Z' + 1)).ToArray());
-                    return $"{region} {numbers} {letters}";
-                }
+            string RandomPlatNomor()
+            {
+                var region = regionCodes[random.Next(regionCodes.Length)];
+                var numbers = random.Next(1000, 9999);
+                var letters = new string(Enumerable.Range(0, 3).Select(_ => (char)random.Next('A', 'Z' + 1)).ToArray());
+                return $"{region} {numbers} {letters}";
+            }
 
-                var motorList = new[]
-                {
+            var motorList = new[]
+            {
                     ("Honda", "Beat", (60000m, 75000m), new MotorImage { Front = "07c7461b-bdcc-4128-a400-66edfb0b276b.png", Rear = "e8b6aa4c-ace6-4f92-8037-c6694e4b9e46.png", Left = "bf1d1a38-5ce1-4014-a5b3-cb3d4db4b248.png", Right = "ed407e62-2daf-4419-946f-1faca5e52569.webp" }),
                     ("Yamaha", "NMAX", (100000m, 130000m), new MotorImage { Front = "8853c147-c86d-4861-b16f-eac91ea22fa8.png", Rear = "19ebe0c0-509d-4c14-b6b3-9114e1a42998.png", Left = "1ec45ed0-bb93-462d-ac2a-5ea3b5ac33ff.png", Right = "48579eb2-b70a-4d30-b4c6-44b97a9fc98b.png" }),
                     ("Honda", "PCX 160", (110000m, 140000m), new MotorImage { Front = "7ad93606-eb66-4d1a-8f4f-6d2363107056.png", Rear = "1ac0a25f-547e-48c7-8593-1b735a1ff64b.png", Left = "6020b294-84b3-4d16-9ade-12f1c378f883.png", Right = "03a8b78f-a175-4b0c-be7f-e674752d3b48.png" }),
@@ -74,8 +76,8 @@ namespace Setoran_API.NET.Models
                     Brand = brand,
                     Tipe = "",
                     Tahun = tahun,
-                    Transmisi = transmisiOptions[random.Next(transmisiOptions.Length)],
-                    StatusMotor = "Tersedia",
+                    Transmisi = faker.PickRandom<TransmisiMotor>(),
+                    StatusMotor = StatusMotor.Tersedia,
                     HargaHarian = harga
                 };
 
@@ -85,11 +87,26 @@ namespace Setoran_API.NET.Models
                 motorImage.IdMotor = motor.IdMotor;
                 dbContext.Set<MotorImage>().Add(motorImage);
                 dbContext.SaveChanges();
-                    
+
                 motor.IdMotorImage = motorImage.Id;
                 dbContext.Update(motor);
                 dbContext.SaveChanges();
             }
         }
+    }
+
+    public enum StatusMotor
+    {
+        Diajukan,
+        Tersedia,
+        Disewa,
+        DalamPerbaikan,
+        TidakTersedia
+    }
+
+    public enum TransmisiMotor
+    {
+        Matic,
+        Manual
     }
 }

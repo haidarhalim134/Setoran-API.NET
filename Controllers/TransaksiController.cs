@@ -38,7 +38,7 @@ namespace Setoran_API.NET.Controllers
                 transaksis = transaksis.Where(t => t.Motor.IdMitra.ToString() == query.IdMitra);
             }
 
-            if (!string.IsNullOrEmpty(query.Status))
+            if (query.Status != null)
             {
                 transaksis = transaksis.Where(t => t.Status == query.Status);
             }
@@ -72,7 +72,7 @@ namespace Setoran_API.NET.Controllers
             {
                 return NotFound("Motor tidak ditemukan");
             }
-            if (motor.StatusMotor != "Tersedia")
+            if (motor.StatusMotor != StatusMotor.Tersedia)
             {
                 return BadRequest("Motor tidak tersedia");
             }
@@ -113,7 +113,7 @@ namespace Setoran_API.NET.Controllers
                 TanggalMulai = transaksi.TanggalMulai,
                 TanggalSelesai = transaksi.TanggalSelesai,
                 TotalHarga = totalHarga,
-                Status = "created" // Set default status
+                Status = StatusTransaksi.Dibuat // Set default status
             };
 
             await _context.Transaksi.AddAsync(newTransaksi);
@@ -124,7 +124,7 @@ namespace Setoran_API.NET.Controllers
             {
                 IdTransaksi = newTransaksi.IdTransaksi,
                 MetodePembayaran = transaksi.MetodePembayaran,
-                StatusPembayaran = "Belum Lunas",
+                StatusPembayaran = StatusPembayaran.BelumLunas,
                 TanggalPembayaran = null
             });
             await _context.SaveChangesAsync();
@@ -133,7 +133,7 @@ namespace Setoran_API.NET.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTransaksi(int id, string status)
+        public async Task<IActionResult> UpdateTransaksi(int id, StatusTransaksi status)
         {
             var transaksi = await _context.Transaksi.FindAsync(id);
             if (transaksi == null)

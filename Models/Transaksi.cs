@@ -16,7 +16,7 @@ namespace Setoran_API.NET.Models
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalHarga { get; set; }
-        public string Status { get; set; }
+        public StatusTransaksi Status { get; set; }
 
         [ForeignKey("IdMotor")]
         public Motor Motor { get; set; }
@@ -56,7 +56,7 @@ namespace Setoran_API.NET.Models
                         TanggalMulai = tanggalMulai,
                         TanggalSelesai = tanggalSelesai,
                         TotalHarga = totalHarga,
-                        Status = faker.Random.Bool() ? "selesai" : faker.PickRandom(statusOptions)// ensure these are for graph
+                        Status = faker.PickRandom<StatusTransaksi>()
                     };
 
                     dbContext.Set<Transaksi>().Add(transaksi);
@@ -65,5 +65,13 @@ namespace Setoran_API.NET.Models
 
             dbContext.SaveChanges();
         }
+    }
+
+    public enum StatusTransaksi
+    {
+        Dibuat,
+        Berlangsung,
+        Batal,
+        Selesai
     }
 }

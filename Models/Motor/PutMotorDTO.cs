@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Setoran_API.NET.Models;
 
 public record class PutMotorDTO
 {
@@ -25,10 +26,10 @@ public record class PutMotorDTO
     public int Tahun { get; set; }
 
     [Required]
-    public string Transmisi { get; set; }
+    public TransmisiMotor Transmisi { get; set; }
 
     [Required]
-    public string StatusMotor { get; set; }
+    public StatusMotor StatusMotor { get; set; }
 
     [Required]
     public decimal HargaHarian { get; set; }

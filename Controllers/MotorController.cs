@@ -37,7 +37,7 @@ namespace Setoran_API.NET.Controllers
             {
                 motors = motors.Where(m => m.IdMitra == int.Parse(query.IdMitra));
             }
-            if (!string.IsNullOrEmpty(query.Status))
+            if (query.Status != null)
             {
                 motors = motors.Where(m => m.StatusMotor == query.Status);
             }
@@ -45,7 +45,7 @@ namespace Setoran_API.NET.Controllers
             {
                 motors = motors.Where(m => m.Model == query.Model);
             }
-            if (!string.IsNullOrEmpty(query.Transmisi))
+            if (query.Transmisi != null)
             {
                 motors = motors.Where(m => m.Transmisi == query.Transmisi);
             }
