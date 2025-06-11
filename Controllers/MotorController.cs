@@ -196,10 +196,25 @@ namespace Setoran_API.NET.Controllers
             return NoContent();
         }
 
-        [HttpGet("{idMotor}/rentalCount")]
-        public async Task<ActionResult<int>> GetRentalCount([FromRoute] int idMotor)
+        [HttpGet("acceptMotor/{idMotor}")]
+        public async Task<IActionResult> AcceptMotor([FromRoute] int idMotor)
         {
-            return await _context.Transaksi.Where(itm => itm.IdMotor == idMotor).CountAsync();
+            var motor = await _context.Motor.FindAsync(idMotor);
+
+            if (motor == null)
+            {
+                return NotFound("Motor tidak ditemukan");
+            }
+
+            if (motor.StatusMotor != StatusMotor.Diajukan)
+            {
+                return BadRequest("Motor sudah diterima");
+            }
+
+            motor.StatusMotor = StatusMotor.Tersedia;
+            _context.Motor.Update(motor);
+
+            return Ok();
         }
 
         [HttpDelete("{id}")]
