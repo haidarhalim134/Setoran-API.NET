@@ -24,6 +24,90 @@ namespace Setoran_API.NET.Models
         [ForeignKey("IdPelanggan")]
         public Pelanggan Pelanggan { get; set; }
 
+        public static async Task<Transaksi> InitiateTransaction(DbContext _context, PostTransaksiDTO transaksi)
+        {
+            var motor = await _context.Set<Motor>().FindAsync(transaksi.IdMotor);
+            if (motor == null)
+            {
+                throw new Exception("Motor tidak ditemukan");
+            }
+
+            if (motor.StatusMotor != StatusMotor.Tersedia)
+            {
+                throw new Exception("Motor tidak tersedia");
+            }
+            
+            var totalHarga = motor.HargaHarian * (transaksi.TanggalSelesai - transaksi.TanggalMulai).Days;
+
+            if (transaksi.idDiscount != null)
+            {
+                var diskon = await _context.Set<Diskon>().FindAsync(transaksi.idDiscount);
+                if (diskon == null)
+                {
+                    throw new Exception("Diskon tidak ditemukan");
+                }
+                totalHarga = totalHarga - diskon.JumlahDiskon;
+            }
+
+            if (transaksi.idVoucher != null)
+            {
+                var voucher = await _context.Set<Voucher>().FindAsync(transaksi.idVoucher);
+                if (voucher == null)
+                {
+                    throw new Exception("Voucher tidak ditemukan");
+                }
+                totalHarga = totalHarga - voucher.PersenVoucher * totalHarga / 100;
+                var pelanggan = await _context.Set<Pelanggan>().FindAsync(transaksi.IdPelanggan);
+                if (pelanggan == null)
+                {
+                    throw new Exception("Pelanggan tidak ditemukan");
+                }
+                Voucher.UseVoucher(_context, voucher, pelanggan);
+            }
+
+
+            var newTransaksi = new Transaksi
+            {
+                IdMotor = transaksi.IdMotor,
+                IdPelanggan = transaksi.IdPelanggan,
+                TanggalMulai = transaksi.TanggalMulai,
+                TanggalSelesai = transaksi.TanggalSelesai,
+                TotalHarga = totalHarga,
+                Status = StatusTransaksi.Dibuat // Set default status
+            };
+
+            await _context.AddAsync(newTransaksi);
+
+            await _context.SaveChangesAsync();
+
+            await _context.AddAsync(new Pembayaran
+            {
+                IdTransaksi = newTransaksi.IdTransaksi,
+                MetodePembayaran = transaksi.MetodePembayaran,
+                StatusPembayaran = StatusPembayaran.BelumLunas,
+                TanggalPembayaran = null
+            });
+            await _context.SaveChangesAsync();
+
+            motor.StatusMotor = StatusMotor.Disewa;
+            _context.Set<Motor>().Update(motor);
+
+            return newTransaksi;
+        }
+
+        public async Task CompleteTransaction(DbContext _context)
+        {
+            Status = StatusTransaksi.Selesai;
+
+            var motor = await _context.Set<Motor>().FindAsync(IdMotor);
+            motor!.StatusMotor = StatusMotor.Tersedia;
+
+            _context.Update(this);
+            _context.Update(Motor);
+
+            await _context.SaveChangesAsync();
+        }
+
         public static void Seed(DbContext dbContext)
         {
             var faker = new Faker("id_ID");
@@ -39,28 +123,28 @@ namespace Setoran_API.NET.Models
                 ("7_days", DateTime.UtcNow.AddDays(-7), DateTime.UtcNow),
             };
 
+
+
             foreach (var (label, startDate, endDate) in dateRanges)
             {
                 for (int i = 0; i < 50; i++)
                 {
-                    var tanggalMulai = faker.Date.Between(startDate, endDate);
+                    var tanggalSelesai = faker.Date.Between(startDate, endDate);
                     var durasi = faker.Random.Int(1, 5);
-                    var tanggalSelesai = tanggalMulai.AddDays(durasi);
-                    var hargaPerHari = faker.Random.Decimal(50000, 150000);
-                    var totalHarga = hargaPerHari * durasi;
+                    var tanggalMulai = tanggalSelesai.AddDays(durasi * -1);
 
-                    var transaksi = new Transaksi
+                    var transaksiDto = new PostTransaksiDTO
                     {
                         IdMotor = faker.PickRandom(motors).IdMotor,
                         IdPelanggan = faker.PickRandom(pelanggans).IdPelanggan,
                         TanggalMulai = tanggalMulai,
                         TanggalSelesai = tanggalSelesai,
-                        TotalHarga = totalHarga,
-                        Status = faker.PickRandom<StatusTransaksi>()
+                        MetodePembayaran = faker.PickRandom<MetodePembayaran>()
                     };
 
-                    dbContext.Set<Transaksi>().Add(transaksi);
-                }
+                    var transaksi = InitiateTransaction(dbContext, transaksiDto).Result;
+                    transaksi.CompleteTransaction(dbContext).Wait();
+                }   
             }
 
             dbContext.SaveChanges();
