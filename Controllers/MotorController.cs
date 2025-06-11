@@ -24,11 +24,11 @@ namespace Setoran_API.NET.Controllers
             {
                 motors = motors.Include(m => m.MotorImage);
             }
-            if (query.WithDiskon)
+            if (query.WithDiskon || query.Sorting == MotorSorting.BestDiscount)
             {
                 motors = motors.Include(m => m.Diskon);
             }
-            if (query.WithUlasan)
+            if (query.WithUlasan || query.Sorting == MotorSorting.BestRating)
             {
                 motors = motors.Include(m => m.Ulasan);
             }
@@ -50,8 +50,48 @@ namespace Setoran_API.NET.Controllers
                 motors = motors.Where(m => m.Transmisi == query.Transmisi);
             }
 
+            switch (query.Sorting)
+            {
+                case MotorSorting.MostPopular:
+                    motors = motors
+                        .GroupJoin(
+                            _context.Transaksi,
+                            motor => motor.IdMotor,
+                            transaksi => transaksi.IdMotor,
+                            (motor, transaksis) => new { Motor = motor, TransaksiCount = transaksis.Count() }
+                        )
+                        .OrderByDescending(x => x.TransaksiCount)
+                        .Select(x => x.Motor);
+                    break;
+
+                case MotorSorting.BestRating:
+                    motors = motors
+                        .OrderByDescending(m => m.Ulasan.Any()
+                            ? m.Ulasan.Average(u => u.Rating)
+                            : 2.5); // kalau gak ada ulasan anggap average
+                    break;
+
+                case MotorSorting.None:
+                default:
+                    // no sorting applied
+                    break;
+
+            }
+
+            // Pagination
+            motors = motors
+                .Skip((query.Page - 1) * query.AmountPerPage)
+                .Take(query.AmountPerPage);
+
             var result = await motors.ToListAsync();
 
+            // agak repot kalau mau di atas soalnya manggil method custom
+            if (query.Sorting == MotorSorting.BestDiscount)
+            {
+                result = result
+                    .OrderByDescending(m => m.GetBestDiscount())
+                    .ToList();
+            }
 
             return Ok(result);
         }
@@ -154,6 +194,12 @@ namespace Setoran_API.NET.Controllers
             _context.Motor.Update(motor);
             await _context.SaveChangesAsync();
             return NoContent();
+        }
+
+        [HttpGet("{idMotor}/rentalCount")]
+        public async Task<ActionResult<int>> GetRentalCount([FromRoute] int idMotor)
+        {
+            return await _context.Transaksi.Where(itm => itm.IdMotor == idMotor).CountAsync();
         }
 
         [HttpDelete("{id}")]

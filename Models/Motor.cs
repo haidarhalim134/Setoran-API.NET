@@ -32,6 +32,36 @@ namespace Setoran_API.NET.Models
         [ForeignKey("IdMotorImage")]
         public MotorImage? MotorImage { get; set; }
 
+        public decimal GetBestDiscount()
+        {
+            Diskon? diskonTerbaik = null;
+
+            if (Diskon != null)
+            {
+                foreach (var discount in Diskon)
+                {
+                    if (discount.TanggalMulai != null && discount.TanggalAkhir != null &&
+                        discount.TanggalMulai <= DateTime.Now &&
+                        discount.TanggalAkhir >= DateTime.Now)
+                    {
+                        if (diskonTerbaik != null)
+                        {
+                            if (discount.JumlahDiskon > diskonTerbaik.JumlahDiskon)
+                            {
+                                diskonTerbaik = discount;
+                            }
+                        }
+                        else
+                        {
+                            diskonTerbaik = discount;
+                        }
+                    }
+                }
+            }
+
+            return diskonTerbaik != null ? diskonTerbaik.JumlahDiskon : 0;
+        }
+
         public static void Seed(DbContext dbContext)
         {
             var faker = new Faker("id_ID");
