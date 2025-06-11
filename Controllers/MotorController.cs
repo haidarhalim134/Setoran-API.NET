@@ -156,6 +156,27 @@ namespace Setoran_API.NET.Controllers
             return NoContent();
         }
 
+        [HttpGet("acceptMotor/{idMotor}")]
+        public async Task<IActionResult> AcceptMotor([FromRoute] int idMotor)
+        {
+            var motor = await _context.Motor.FindAsync(idMotor);
+
+            if (motor == null)
+            {
+                return NotFound("Motor tidak ditemukan");
+            }
+
+            if (motor.StatusMotor != StatusMotor.Diajukan)
+            {
+                return BadRequest("Motor sudah diterima");
+            }
+
+            motor.StatusMotor = StatusMotor.Tersedia;
+            _context.Motor.Update(motor);
+
+            return Ok();
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMotor(int id)
         {

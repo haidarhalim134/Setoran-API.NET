@@ -28,7 +28,7 @@ namespace Setoran_API.NET.Models
                 .Where(v => !db.VoucherUsed.Any(vu => vu.Voucher.IdVoucher == v.IdVoucher && vu.Pelanggan.IdPelanggan == pelanggan.IdPelanggan));
         }
         
-        public static void UseVoucher(Database db, Voucher voucher, Pelanggan pelanggan)
+        public static void UseVoucher(DbContext db, Voucher voucher, Pelanggan pelanggan)
         {
             var voucherUsed = new VoucherUsed {
                 Voucher=voucher,
