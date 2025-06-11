@@ -20,6 +20,7 @@ namespace Setoran_API.NET.Models
     public enum StatusPembayaran
     {
         BelumLunas,
+        MenungguKonfirmasi,
         Lunas,
         Gagal
     }
