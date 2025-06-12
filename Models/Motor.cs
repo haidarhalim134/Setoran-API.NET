@@ -76,10 +76,11 @@ namespace Setoran_API.NET.Models
 
             string RandomPlatNomor()
             {
-                var region = regionCodes[random.Next(regionCodes.Length)];
-                var numbers = random.Next(1000, 9999);
-                var letters = new string(Enumerable.Range(0, 3).Select(_ => (char)random.Next('A', 'Z' + 1)).ToArray());
-                return $"{region} {numbers} {letters}";
+                var region = regionCodes[random.Next(regionCodes.Length)].Substring(0, 1); // Ensure only 1 char
+                var numbers = random.Next(0, 10000).ToString("D4"); // Always 4 digits, padded with zeroes
+                var letters = new string(Enumerable.Range(0, 4)
+                    .Select(_ => (char)random.Next('A', 'Z' + 1)).ToArray()); // 4 letters
+                return $"{region}{numbers}{letters}";
             }
 
             var motorList = new[]
@@ -97,7 +98,8 @@ namespace Setoran_API.NET.Models
             {
                 for (int i = 0; i < random.Next(3, 5); i++)
                 {
-                    var harga = Math.Round((decimal)(random.NextDouble() * ((double)(priceRange.Item2 - priceRange.Item1))) + priceRange.Item1, 0);
+                    var rawHarga = (decimal)(random.NextDouble() * (double)(priceRange.Item2 - priceRange.Item1)) + priceRange.Item1;
+                    var harga = Math.Round(rawHarga / 1000, 0) * 1000;
                     var tahun = random.Next(2020, 2025);
 
                     var motor = new Motor
