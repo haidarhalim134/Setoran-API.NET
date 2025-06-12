@@ -20,6 +20,7 @@ namespace Setoran_API.NET.Controllers
         public async Task<ActionResult<List<Motor>>> GetMotors([FromQuery] MotorQuery query)
         {
             IQueryable<Motor> motors = _context.Motor;
+
             if (query.WithImage)
             {
                 motors = motors.Include(m => m.MotorImage);
@@ -32,6 +33,13 @@ namespace Setoran_API.NET.Controllers
             {
                 motors = motors.Include(m => m.Ulasan);
             }
+            if (query.WithPengguna)
+            {
+                motors = motors
+                    .Include(m => m.Mitra)
+                    .ThenInclude(m => m.Pengguna);
+            }
+
 
             if (!string.IsNullOrEmpty(query.IdMitra))
             {

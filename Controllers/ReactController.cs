@@ -31,22 +31,23 @@ namespace Setoran_API.NET.Controllers
             return Ok(result);
         }
 
-        [HttpGet("motorTableData")]
-        public async Task<ActionResult<List<MotorTableDTO>>> GetMotorTableData()
-        {
-            static MotorTableDTO toDto(Motor motor)
-            {
-                MotorTableDTO data = motor.Adapt<MotorTableDTO>();
-                data.OwnerName = motor.Mitra.Pengguna.Nama;
-                data.OwnerId = motor.Mitra.Pengguna.Id;
+        // [HttpGet("motorTableData")]
+        // public async Task<ActionResult<List<MotorTableDTO>>> GetMotorTableData()
+        // {
+        //     static MotorTableDTO toDto(Motor motor)
+        //     {
+        //         MotorTableDTO data = motor.Adapt<MotorTableDTO>();
+        //         data.OwnerName = motor.Mitra.Pengguna.Nama;
+        //         data.OwnerId = motor.Mitra.Pengguna.Id;
 
-                return data;
-            }
-            return _db.Motor
-                .Include(m => m.Mitra)
-                .ThenInclude(mitra => mitra.Pengguna)
-                .Select(toDto)
-                .ToList();
-        }
+        //         return data;
+        //     }
+        //     return _db.Motor
+        //         .Include(m => m.Mitra)
+        //         .ThenInclude(mitra => mitra.Pengguna)
+        //         .ToList()
+        //         .Select(toDto)
+        //         .ToList();
+        // }
     }
 }

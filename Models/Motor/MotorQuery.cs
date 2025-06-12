@@ -5,6 +5,7 @@ public class MotorQuery
     public bool WithImage { get; set; } = false;
     public bool WithDiskon { get; set; } = false;
     public bool WithUlasan { get; set; } = false;
+    public bool WithPengguna { get; set; } = false;
     public String? IdMitra { get; set; }
     public StatusMotor? Status { get; set; }
     public string? Model { get; set; }

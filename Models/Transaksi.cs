@@ -153,6 +153,7 @@ namespace Setoran_API.NET.Models
                     transaksi.CompleteTransaction(dbContext).Wait();
 
                     transaksi.Pembayaran.StatusPembayaran = StatusPembayaran.Lunas;
+                    transaksi.Pembayaran.TanggalPembayaran = DateTime.Now.ToUniversalTime();
                     dbContext.Update(transaksi.Pembayaran);
                 }   
             }
