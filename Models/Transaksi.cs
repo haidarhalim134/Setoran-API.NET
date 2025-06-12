@@ -118,8 +118,8 @@ namespace Setoran_API.NET.Models
         public static void Seed(DbContext dbContext)
         {
             var faker = new Faker("id_ID");
-            var motors = dbContext.Set<Motor>().ToList();
-            var pelanggans = dbContext.Set<Pelanggan>().ToList();
+            var motors = dbContext.Set<Motor>().Include(m => m.Mitra).ToList();
+            var pelanggans = dbContext.Set<Pelanggan>().Include(p => p.Pengguna).ToList();
             var statusOptions = new[] { "dibuat", "berlangsung", "batal", "selesai" };
 
             // buat populasi graph di dashboard website
@@ -140,10 +140,12 @@ namespace Setoran_API.NET.Models
                     var durasi = faker.Random.Int(1, 5);
                     var tanggalMulai = tanggalSelesai.AddDays(durasi * -1);
 
+                    var pelanggan = faker.PickRandom(pelanggans);
+
                     var transaksiDto = new PostTransaksiDTO
                     {
-                        IdMotor = faker.PickRandom(motors).IdMotor,
-                        IdPelanggan = faker.PickRandom(pelanggans).IdPelanggan,
+                        IdMotor = faker.PickRandom(motors.Where(m => m.Mitra.IdPengguna != pelanggan.IdPengguna)).IdMotor,
+                        IdPelanggan = pelanggan.IdPelanggan,
                         TanggalMulai = tanggalMulai,
                         TanggalSelesai = tanggalSelesai,
                         MetodePembayaran = faker.PickRandom<MetodePembayaran>()
