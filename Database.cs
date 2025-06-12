@@ -72,6 +72,11 @@ public class Database : IdentityDbContext
             .WithMany(e => e.UsedVouchers)
             .UsingEntity<VoucherUsed>();
 
+        modelBuilder.Entity<Transaksi>()
+            .HasOne(e => e.Pembayaran)
+            .WithOne(e => e.Transaksi)
+            .HasForeignKey<Pembayaran>(p => p.IdTransaksi);
+
         modelBuilder.Entity<Voucher>()
             .HasIndex(u => u.KodeVoucher)
             .IsUnique();

@@ -24,6 +24,8 @@ namespace Setoran_API.NET.Models
         [ForeignKey("IdPelanggan")]
         public Pelanggan Pelanggan { get; set; }
 
+        public Pembayaran Pembayaran { get; set; }
+
         public static async Task<Transaksi> InitiateTransaction(DbContext _context, PostTransaksiDTO transaksi)
         {
             var motor = await _context.Set<Motor>().FindAsync(transaksi.IdMotor);
@@ -80,17 +82,22 @@ namespace Setoran_API.NET.Models
 
             await _context.SaveChangesAsync();
 
-            await _context.AddAsync(new Pembayaran
+            var pembayaran = new Pembayaran
             {
                 IdTransaksi = newTransaksi.IdTransaksi,
                 MetodePembayaran = transaksi.MetodePembayaran,
                 StatusPembayaran = StatusPembayaran.BelumLunas,
                 TanggalPembayaran = null
-            });
+            };
+
+            await _context.AddAsync(pembayaran);
             await _context.SaveChangesAsync();
 
             motor.StatusMotor = StatusMotor.Disewa;
             _context.Set<Motor>().Update(motor);
+
+            // gak perlu di safe karena relasi nya udah ada
+            newTransaksi.Pembayaran = pembayaran;
 
             return newTransaksi;
         }
@@ -144,6 +151,9 @@ namespace Setoran_API.NET.Models
 
                     var transaksi = InitiateTransaction(dbContext, transaksiDto).Result;
                     transaksi.CompleteTransaction(dbContext).Wait();
+
+                    transaksi.Pembayaran.StatusPembayaran = StatusPembayaran.Lunas;
+                    dbContext.Update(transaksi.Pembayaran);
                 }   
             }
 

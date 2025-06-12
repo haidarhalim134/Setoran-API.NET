@@ -12,8 +12,6 @@ namespace Setoran_API.NET.Models
         public MetodePembayaran MetodePembayaran { get; set; }
         public StatusPembayaran StatusPembayaran { get; set; }
         public DateTime? TanggalPembayaran { get; set; }
-
-        [ForeignKey("IdTransaksi")]
         public Transaksi Transaksi { get; set; }
     }
 
