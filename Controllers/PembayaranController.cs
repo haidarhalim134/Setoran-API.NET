@@ -109,5 +109,24 @@ namespace Setoran_API.NET.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("confirmPayment/{idPembayaran}")]
+        public async Task<IActionResult> ConfirmPayment([FromRoute] int idPembayaran)
+        {
+            var pembayaran = await _context.Pembayaran.FindAsync(idPembayaran);
+            if (pembayaran == null)
+            {
+                return NotFound("Pembayaran tidak ditemukan");
+            }
+            if (pembayaran.StatusPembayaran != StatusPembayaran.MenungguKonfirmasi)
+            {
+                return BadRequest("Pembayaran sudah terkonfirmasi");
+            }
+
+            pembayaran.StatusPembayaran = StatusPembayaran.Lunas;
+            _context.Update(pembayaran);
+
+            return Ok();
+        }
     }
 }
