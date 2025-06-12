@@ -136,6 +136,7 @@ public class Database : IdentityDbContext
             Setoran_API.NET.Models.Voucher.Seed(context);
             Setoran_API.NET.Models.Transaksi.Seed(context);
             Setoran_API.NET.Models.Ulasan.Seed(context);
+            Setoran_API.NET.Models.Diskon.Seed(context);
 
             context.SaveChanges();
         });

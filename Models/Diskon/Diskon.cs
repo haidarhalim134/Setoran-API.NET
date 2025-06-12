@@ -25,16 +25,17 @@ namespace Setoran_API.NET.Models
             var faker = new Faker("id_ID");
             foreach (var motor in dbContext.Set<Motor>())
             {
-                if (!faker.Random.Bool())
-                    continue;
+                // if (!faker.Random.Bool())
+                //     continue;
                     
                 var tanggalMulai = faker.Date.PastOffset(1).UtcDateTime.Date;
                 var daysToAdd = faker.Random.Int(1, 10);
-                var tanggalAkhir = tanggalMulai.AddDays(daysToAdd);
+                var tanggalAkhir = tanggalMulai.AddDays(daysToAdd).ToUniversalTime();
 
                 var diskon = new Diskon
                 {
                     Nama = string.Join(" ", faker.Lorem.Words(2)),
+                    IdMotor = motor.IdMotor,
                     StatusDiskon = faker.PickRandom(new[] { StatusDiskon.Aktif, StatusDiskon.NonAktif }),
                     TanggalMulai = tanggalMulai,
                     TanggalAkhir = tanggalAkhir,
@@ -42,8 +43,9 @@ namespace Setoran_API.NET.Models
                 };
 
                 dbContext.Set<Diskon>().Add(diskon);
-                dbContext.SaveChanges();
             }
+
+            dbContext.SaveChanges();
         }
     }
 

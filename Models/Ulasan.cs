@@ -36,7 +36,7 @@ namespace Setoran_API.NET.Models
                         IdPelanggan = faker.PickRandom(pelanggans.Where(p => p.IdPengguna != motor.Mitra.IdPengguna)).IdPelanggan,
                         Rating = random.Next(2, 6),
                         Komentar = "Ini adalah komentar ulasan",
-                        TanggalUlasan = DateTime.Now
+                        TanggalUlasan = DateTime.Now.ToUniversalTime()
                     };
 
                     dbContext.Add(ulasan);

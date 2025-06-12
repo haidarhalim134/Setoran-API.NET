@@ -142,9 +142,13 @@ namespace Setoran_API.NET.Models
 
                     var pelanggan = faker.PickRandom(pelanggans);
 
+                    var otherMotors = motors.Where(m => m.Mitra.IdPengguna != pelanggan.IdPengguna);
+                    if (otherMotors.Count() == 0)
+                        continue;
+
                     var transaksiDto = new PostTransaksiDTO
                     {
-                        IdMotor = faker.PickRandom(motors.Where(m => m.Mitra.IdPengguna != pelanggan.IdPengguna)).IdMotor,
+                        IdMotor = faker.PickRandom(otherMotors).IdMotor,
                         IdPelanggan = pelanggan.IdPelanggan,
                         TanggalMulai = tanggalMulai,
                         TanggalSelesai = tanggalSelesai,
