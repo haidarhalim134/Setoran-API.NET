@@ -131,6 +131,21 @@ namespace Setoran_API.NET.Controllers
             return Ok(ulasans);
         }
 
+        [HttpGet("{id}/ulasan/pelanggan/{idPelanggan}")]
+        public async Task<ActionResult<List<Ulasan>>> GetUlasanByMotorIdPenggunaId([FromRoute] int id, [FromRoute] int idPelanggan)
+        {
+            var motor = await _context.Motor.FindAsync(id);
+
+            if (motor == null)
+            {
+                return NotFound("Motor tidak ditemukan");
+            }
+
+            var ulasans = await _context.Ulasan.Where(u => u.IdMotor == id && u.IdPelanggan == idPelanggan).ToListAsync();
+
+            return Ok(ulasans);
+        }
+
         [HttpGet("{id}/diskons")]
         public async Task<ActionResult<List<Diskon>>> GetDiskonByMotorId(int id)
         {
