@@ -56,11 +56,11 @@ namespace Setoran_API.NET.Controllers
         public async Task<ActionResult<Transaksi>> GetTransaksiById(int id)
         {
             var transaksi = await _context.Transaksi
-                .Include(t => t.Motor).ThenInclude(m => m.Mitra)
+                .Include(t => t.Motor).ThenInclude(m => m.Mitra).ThenInclude(m => m.Pengguna)
                 .Include(t => t.Pelanggan).ThenInclude(p => p.Pengguna)
                 .Include(t => t.Pembayaran)
                 .FirstAsync(t => t.IdTransaksi == id);
-                
+
             if (transaksi == null)
             {
                 return NotFound("Transaksi tidak ditemukan");
