@@ -125,6 +125,7 @@ namespace Setoran_API.NET.Controllers
 
             pembayaran.StatusPembayaran = StatusPembayaran.Lunas;
             _context.Update(pembayaran);
+            await _context.SaveChangesAsync();
 
             return Ok();
         }

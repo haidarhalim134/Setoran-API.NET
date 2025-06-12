@@ -213,6 +213,7 @@ namespace Setoran_API.NET.Controllers
 
             motor.StatusMotor = StatusMotor.Tersedia;
             _context.Motor.Update(motor);
+            await _context.SaveChangesAsync();
 
             return Ok();
         }
